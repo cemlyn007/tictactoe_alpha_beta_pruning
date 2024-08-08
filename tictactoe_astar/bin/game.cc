@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   dummy_engine();
   dummy_render("Hello there!");
   return 0;

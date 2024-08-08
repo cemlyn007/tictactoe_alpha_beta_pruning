@@ -2,6 +2,4 @@
 #include <ctime>
 #include <iostream>
 
-void dummy_engine() {
-  std::cout << "Dummy engine called" << std::endl;
-}
+void dummy_engine() { std::cout << "Dummy engine called" << std::endl; }

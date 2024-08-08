@@ -4,7 +4,7 @@ cc_binary(
     name = "game",
     srcs = ["game.cc"],
     deps = [
-        "//tictactoe_astar/renderer:renderer",
-        "//tictactoe_astar/engine:engine",
+        "//tictactoe_astar/engine",
+        "//tictactoe_astar/renderer",
     ],
 )
