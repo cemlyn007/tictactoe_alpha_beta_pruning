@@ -4,7 +4,7 @@
 #include <string>
 
 int main(int argc, char **argv) {
-  dummy_engine();
-  dummy_render("Hello there!");
+  tictactoe_astar::engine::dummy_engine();
+  tictactoe_astar::renderer::dummy_render("Hello there!");
   return 0;
 }

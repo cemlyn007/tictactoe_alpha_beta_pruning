@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace tictactoe_astar::renderer {
 void dummy_render(const std::string &content);
+}
 
 #endif
