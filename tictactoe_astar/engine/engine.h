@@ -2,7 +2,12 @@
 #define TICTACTOE_ASTAR_ENGINE_H_
 
 namespace tictactoe_astar::engine {
-void dummy_engine();
-}
+
+class Engine {
+public:
+  Engine();
+  void dummy_engine();
+};
+} // namespace tictactoe_astar::engine
 
 #endif

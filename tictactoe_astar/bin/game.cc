@@ -6,7 +6,8 @@
 #include <GLFW/glfw3.h>
 
 int main() {
-  tictactoe_astar::engine::dummy_engine();
+  tictactoe_astar::engine::Engine engine;
+  engine.dummy_engine();
   tictactoe_astar::renderer::Renderer renderer(3);
   renderer.render("Hello there!");
 

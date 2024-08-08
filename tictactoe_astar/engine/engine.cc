@@ -3,5 +3,6 @@
 #include <iostream>
 
 namespace tictactoe_astar::engine {
-void dummy_engine() { std::cout << "Dummy engine called" << std::endl; }
+Engine::Engine(){};
+void Engine::dummy_engine() { std::cout << "Dummy engine called" << std::endl; }
 } // namespace tictactoe_astar::engine
