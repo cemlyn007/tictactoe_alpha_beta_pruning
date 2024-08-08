@@ -7,7 +7,8 @@
 
 int main() {
   tictactoe_astar::engine::dummy_engine();
-  tictactoe_astar::renderer::dummy_render("Hello there!");
+  tictactoe_astar::renderer::Renderer renderer(3);
+  renderer.render("Hello there!");
 
   if (!glfwInit())
     return -1;

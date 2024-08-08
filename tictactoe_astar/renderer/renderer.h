@@ -4,7 +4,13 @@
 #include <string>
 
 namespace tictactoe_astar::renderer {
-void dummy_render(const std::string &content);
-}
+
+class Renderer {
+public:
+  Renderer(size_t size);
+  void render(const std::string &content);
+};
+
+} // namespace tictactoe_astar::renderer
 
 #endif
