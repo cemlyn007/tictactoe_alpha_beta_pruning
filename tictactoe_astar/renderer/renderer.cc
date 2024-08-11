@@ -94,8 +94,6 @@ Renderer::Renderer(size_t size) : _size(size) {
   std::vector<float> vertices = create_grid_vectices();
   _vertices_size = vertices.size();
 
-  std::cout << "Size " << _vertices_size << std::endl;
-
   GL_CALL(glBindVertexArray(_vertex_array_object));
 
   GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffer_object));
