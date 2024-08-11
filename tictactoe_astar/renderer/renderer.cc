@@ -75,7 +75,7 @@ void terminate() {
 };
 
 Renderer::Renderer(size_t size) : _size(size) {
-  _window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+  _window = glfwCreateWindow(640, 640, "Hello World", NULL, NULL);
   if (!_window) {
     throw std::runtime_error("Could not create window");
   }
