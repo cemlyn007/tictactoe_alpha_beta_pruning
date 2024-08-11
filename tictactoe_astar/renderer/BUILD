@@ -12,5 +12,8 @@ cc_library(
     srcs = ["renderer.cc"],
     hdrs = ["renderer.h"],
     linkopts = OPENGL_LINKOPTS,
-    deps = ["@glfw"],
+    deps = [
+        "@glew//:glew_static",
+        "@glfw",
+    ],
 )

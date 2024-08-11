@@ -1,12 +1,8 @@
 #include "tictactoe_astar/engine/engine.h"
 #include "tictactoe_astar/renderer/renderer.h"
 
-#include <GL/gl.h>
-#include <GLFW/glfw3.h>
-
 int main() {
   tictactoe_astar::renderer::init();
-
   tictactoe_astar::engine::Engine engine;
   engine.dummy_engine();
   tictactoe_astar::renderer::Renderer renderer(3);

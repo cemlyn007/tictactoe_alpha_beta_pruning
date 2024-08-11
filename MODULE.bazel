@@ -62,3 +62,5 @@ http_archive(
     strip_prefix = "glfw-{}".format(GLFW_VERSION),
     urls = ["https://github.com/glfw/glfw/archive/{}.tar.gz".format(GLFW_VERSION)],
 )
+
+bazel_dep(name = "glew", version = "2.2.0")

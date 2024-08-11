@@ -1,6 +1,6 @@
 #ifndef TICTACTOE_ASTAR_RENDERER_H_
 #define TICTACTOE_ASTAR_RENDERER_H_
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
 
