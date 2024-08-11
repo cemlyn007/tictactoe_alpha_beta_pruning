@@ -14,6 +14,7 @@ class Renderer {
 private:
   const size_t _size;
   GLFWwindow *_window;
+  GLuint _vertex_buffer_object;
 
 public:
   Renderer(size_t size);

@@ -69,6 +69,7 @@ Renderer::Renderer(size_t size) : _size(size) {
   if (!_window) {
     throw std::runtime_error("Could not create window");
   }
+  // else...
   glfwMakeContextCurrent(_window);
   GLenum error = glewInit();
   if (GLEW_OK != error) {
@@ -76,9 +77,14 @@ Renderer::Renderer(size_t size) : _size(size) {
         std::string("Error initializing glew: ") +
         reinterpret_cast<const char *>(glewGetErrorString(error)));
   }
+  // else...
+  GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
 }
 
-Renderer::~Renderer() { glfwDestroyWindow(_window); };
+Renderer::~Renderer() {
+  glDeleteBuffers(1, &_vertex_buffer_object);
+  glfwDestroyWindow(_window);
+};
 
 void Renderer::render() {
   glfwMakeContextCurrent(_window);
@@ -86,14 +92,11 @@ void Renderer::render() {
 
   float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 
-  unsigned int VBO;
-  GL_CALL(glGenBuffers(1, &VBO));
-
   unsigned int VAO;
   GL_CALL(glGenVertexArrays(1, &VAO));
   GL_CALL(glBindVertexArray(VAO));
 
-  GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, VBO));
+  GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffer_object));
   GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
                        GL_STATIC_DRAW));
 
@@ -158,7 +161,6 @@ void Renderer::render() {
   GL_CALL(glfwSwapBuffers(_window));
   GL_CALL(glfwPollEvents());
 
-  GL_CALL(glDeleteBuffers(1, &VBO));
   GL_CALL(glDeleteShader(vertexShader));
   GL_CALL(glDeleteShader(fragmentShader));
 }
