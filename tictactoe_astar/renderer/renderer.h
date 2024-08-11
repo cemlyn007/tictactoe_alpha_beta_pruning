@@ -28,6 +28,7 @@ public:
   bool should_close();
 
 private:
+  GLuint load_shader_program();
   std::string read_shader(const std::string &file_path);
 };
 

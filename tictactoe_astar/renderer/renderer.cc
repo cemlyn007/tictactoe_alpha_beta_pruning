@@ -98,36 +98,8 @@ Renderer::Renderer(size_t size) : _size(size) {
                                 (void *)0));
   GL_CALL(glEnableVertexAttribArray(0));
 
-  std::string vertex_shader_source = read_shader(SHADER_VERTEX_FILE_PATH);
-  const char *vertex_shader_c_str = vertex_shader_source.c_str();
-  _vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-  GL_CALL(glShaderSource(_vertex_shader, 1, &vertex_shader_c_str, NULL));
-  GL_CALL(glCompileShader(_vertex_shader));
-  int success;
-  char info_log[512];
-  GL_CALL(glGetShaderiv(_vertex_shader, GL_COMPILE_STATUS, &success));
-  if (!success) {
-    glGetShaderInfoLog(_vertex_shader, 512, NULL, info_log);
-    throw std::runtime_error(
-        std::string("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n") + info_log);
-  }
-  std::string fragment_shader_source = read_shader(SHADER_FRAGMENT_FILE_PATH);
-  const char *fragment_shader_source_c_str = fragment_shader_source.c_str();
-  _fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-  GL_CALL(
-      glShaderSource(_fragment_shader, 1, &fragment_shader_source_c_str, NULL));
-  GL_CALL(glCompileShader(_fragment_shader));
+  _shader_program = load_shader_program();
 
-  _shader_program = glCreateProgram();
-
-  GL_CALL(glAttachShader(_shader_program, _vertex_shader));
-  GL_CALL(glAttachShader(_shader_program, _fragment_shader));
-  GL_CALL(glLinkProgram(_shader_program));
-  GL_CALL(glGetProgramiv(_shader_program, GL_LINK_STATUS, &success));
-  if (!success) {
-    glGetProgramInfoLog(_shader_program, 512, NULL, info_log);
-    std::cout << "ERROR::SHADER::PROGRAM::FAILED\n" << info_log << std::endl;
-  }
   GL_CALL(glUseProgram(_shader_program));
 
   GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
@@ -158,6 +130,40 @@ void Renderer::render() {
 }
 
 bool Renderer::should_close() { return glfwWindowShouldClose(_window); }
+
+GLuint Renderer::load_shader_program() {
+  std::string vertex_shader_source = read_shader(SHADER_VERTEX_FILE_PATH);
+  const char *vertex_shader_c_str = vertex_shader_source.c_str();
+  _vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+  GL_CALL(glShaderSource(_vertex_shader, 1, &vertex_shader_c_str, NULL));
+  GL_CALL(glCompileShader(_vertex_shader));
+  int success;
+  char info_log[512];
+  GL_CALL(glGetShaderiv(_vertex_shader, GL_COMPILE_STATUS, &success));
+  if (!success) {
+    glGetShaderInfoLog(_vertex_shader, 512, NULL, info_log);
+    throw std::runtime_error(
+        std::string("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n") + info_log);
+  }
+  std::string fragment_shader_source = read_shader(SHADER_FRAGMENT_FILE_PATH);
+  const char *fragment_shader_source_c_str = fragment_shader_source.c_str();
+  _fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+  GL_CALL(
+      glShaderSource(_fragment_shader, 1, &fragment_shader_source_c_str, NULL));
+  GL_CALL(glCompileShader(_fragment_shader));
+
+  GLuint shader_program = glCreateProgram();
+
+  GL_CALL(glAttachShader(shader_program, _vertex_shader));
+  GL_CALL(glAttachShader(shader_program, _fragment_shader));
+  GL_CALL(glLinkProgram(shader_program));
+  GL_CALL(glGetProgramiv(shader_program, GL_LINK_STATUS, &success));
+  if (!success) {
+    glGetProgramInfoLog(shader_program, 512, NULL, info_log);
+    std::cout << "ERROR::SHADER::PROGRAM::FAILED\n" << info_log << std::endl;
+  }
+  return shader_program;
+};
 
 std::string Renderer::read_shader(const std::string &file_path) {
   std::ifstream file(file_path);
