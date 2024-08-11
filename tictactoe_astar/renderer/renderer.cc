@@ -79,9 +79,11 @@ Renderer::Renderer(size_t size) : _size(size) {
   }
   // else...
   GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
+  GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
 }
 
 Renderer::~Renderer() {
+  glDeleteBuffers(1, &_vertex_array_object);
   glDeleteBuffers(1, &_vertex_buffer_object);
   glfwDestroyWindow(_window);
 };
@@ -92,9 +94,7 @@ void Renderer::render() {
 
   float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 
-  unsigned int VAO;
-  GL_CALL(glGenVertexArrays(1, &VAO));
-  GL_CALL(glBindVertexArray(VAO));
+  GL_CALL(glBindVertexArray(_vertex_array_object));
 
   GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffer_object));
   GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
@@ -155,7 +155,7 @@ void Renderer::render() {
 
   GL_CALL(glUseProgram(shaderProgram));
 
-  GL_CALL(glBindVertexArray(VAO));
+  GL_CALL(glBindVertexArray(_vertex_array_object));
   GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 3));
 
   GL_CALL(glfwSwapBuffers(_window));
