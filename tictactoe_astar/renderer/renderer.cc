@@ -80,18 +80,6 @@ Renderer::Renderer(size_t size) : _size(size) {
   // else...
   GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
   GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
-}
-
-Renderer::~Renderer() {
-  glDeleteBuffers(1, &_vertex_array_object);
-  glDeleteBuffers(1, &_vertex_buffer_object);
-  glfwDestroyWindow(_window);
-};
-
-void Renderer::render() {
-  glfwMakeContextCurrent(_window);
-  GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
-
   float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 
   GL_CALL(glBindVertexArray(_vertex_array_object));
@@ -104,26 +92,25 @@ void Renderer::render() {
                                 (void *)0));
   GL_CALL(glEnableVertexAttribArray(0));
 
-  const char *vertexShaderSource =
+  const char *vertex_shader_source =
       "#version 330 core\n"
       "layout (location = 0) in vec3 aPos;\n"
       "void main()\n"
       "{\n"
       "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
       "}\0";
-  unsigned int vertexShader;
-  vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  GL_CALL(glShaderSource(vertexShader, 1, &vertexShaderSource, NULL));
-  GL_CALL(glCompileShader(vertexShader));
+  _vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+  GL_CALL(glShaderSource(_vertex_shader, 1, &vertex_shader_source, NULL));
+  GL_CALL(glCompileShader(_vertex_shader));
   int success;
-  char infoLog[512];
-  GL_CALL(glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success));
+  char info_log[512];
+  GL_CALL(glGetShaderiv(_vertex_shader, GL_COMPILE_STATUS, &success));
   if (!success) {
-    glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+    glGetShaderInfoLog(_vertex_shader, 512, NULL, info_log);
     throw std::runtime_error(
-        std::string("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n") + infoLog);
+        std::string("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n") + info_log);
   }
-  const char *fragmentShaderSource =
+  const char *_fragment_shader_source =
       "#version 330 core\n"
       "out vec4 FragColor;\n"
       "void main()\n"
@@ -131,38 +118,47 @@ void Renderer::render() {
       "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
       "}\0";
 
-  unsigned int fragmentShader;
-  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  GL_CALL(glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL));
-  GL_CALL(glCompileShader(fragmentShader));
+  _fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+  GL_CALL(glShaderSource(_fragment_shader, 1, &_fragment_shader_source, NULL));
+  GL_CALL(glCompileShader(_fragment_shader));
 
-  unsigned int shaderProgram;
-  shaderProgram = glCreateProgram();
+  _shader_program = glCreateProgram();
 
-  GL_CALL(glAttachShader(shaderProgram, vertexShader));
-  GL_CALL(glAttachShader(shaderProgram, fragmentShader));
-  GL_CALL(glLinkProgram(shaderProgram));
-  GL_CALL(glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success));
+  GL_CALL(glAttachShader(_shader_program, _vertex_shader));
+  GL_CALL(glAttachShader(_shader_program, _fragment_shader));
+  GL_CALL(glLinkProgram(_shader_program));
+  GL_CALL(glGetProgramiv(_shader_program, GL_LINK_STATUS, &success));
   if (!success) {
-    glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-    std::cout << "ERROR::SHADER::PROGRAM::FAILED\n" << infoLog << std::endl;
+    glGetProgramInfoLog(_shader_program, 512, NULL, info_log);
+    std::cout << "ERROR::SHADER::PROGRAM::FAILED\n" << info_log << std::endl;
   }
-  GL_CALL(glUseProgram(shaderProgram));
+  GL_CALL(glUseProgram(_shader_program));
 
   GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
                                 (void *)0));
   GL_CALL(glEnableVertexAttribArray(0));
+}
 
-  GL_CALL(glUseProgram(shaderProgram));
+Renderer::~Renderer() {
+  glDeleteShader(_shader_program);
+  glDeleteShader(_fragment_shader);
+  glDeleteShader(_vertex_shader);
+  glDeleteBuffers(1, &_vertex_array_object);
+  glDeleteBuffers(1, &_vertex_buffer_object);
+  glfwDestroyWindow(_window);
+};
+
+void Renderer::render() {
+  glfwMakeContextCurrent(_window);
+  GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
+
+  GL_CALL(glUseProgram(_shader_program));
 
   GL_CALL(glBindVertexArray(_vertex_array_object));
   GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 3));
 
   GL_CALL(glfwSwapBuffers(_window));
   GL_CALL(glfwPollEvents());
-
-  GL_CALL(glDeleteShader(vertexShader));
-  GL_CALL(glDeleteShader(fragmentShader));
 }
 
 bool Renderer::should_close() { return glfwWindowShouldClose(_window); }

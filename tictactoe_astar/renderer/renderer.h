@@ -16,6 +16,9 @@ private:
   GLFWwindow *_window;
   GLuint _vertex_buffer_object;
   GLuint _vertex_array_object;
+  GLuint _vertex_shader;
+  GLuint _fragment_shader;
+  GLuint _shader_program;
 
 public:
   Renderer(size_t size);
