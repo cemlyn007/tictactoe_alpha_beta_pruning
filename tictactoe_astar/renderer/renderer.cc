@@ -1,9 +1,15 @@
 #include "tictactoe_astar/renderer/renderer.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+
+static const char *SHADER_VERTEX_FILE_PATH =
+    "tictactoe_astar/renderer/shader.vert";
+static const char *SHADER_FRAGMENT_FILE_PATH =
+    "tictactoe_astar/renderer/shader.frag";
 
 #define GL_CALL(cmd)                                                           \
   {                                                                            \
@@ -92,15 +98,10 @@ Renderer::Renderer(size_t size) : _size(size) {
                                 (void *)0));
   GL_CALL(glEnableVertexAttribArray(0));
 
-  const char *vertex_shader_source =
-      "#version 330 core\n"
-      "layout (location = 0) in vec3 aPos;\n"
-      "void main()\n"
-      "{\n"
-      "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-      "}\0";
+  std::string vertex_shader_source = read_shader(SHADER_VERTEX_FILE_PATH);
+  const char *vertex_shader_c_str = vertex_shader_source.c_str();
   _vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-  GL_CALL(glShaderSource(_vertex_shader, 1, &vertex_shader_source, NULL));
+  GL_CALL(glShaderSource(_vertex_shader, 1, &vertex_shader_c_str, NULL));
   GL_CALL(glCompileShader(_vertex_shader));
   int success;
   char info_log[512];
@@ -110,16 +111,11 @@ Renderer::Renderer(size_t size) : _size(size) {
     throw std::runtime_error(
         std::string("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n") + info_log);
   }
-  const char *_fragment_shader_source =
-      "#version 330 core\n"
-      "out vec4 FragColor;\n"
-      "void main()\n"
-      "{\n"
-      "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-      "}\0";
-
+  std::string fragment_shader_source = read_shader(SHADER_FRAGMENT_FILE_PATH);
+  const char *fragment_shader_source_c_str = fragment_shader_source.c_str();
   _fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-  GL_CALL(glShaderSource(_fragment_shader, 1, &_fragment_shader_source, NULL));
+  GL_CALL(
+      glShaderSource(_fragment_shader, 1, &fragment_shader_source_c_str, NULL));
   GL_CALL(glCompileShader(_fragment_shader));
 
   _shader_program = glCreateProgram();
@@ -163,4 +159,14 @@ void Renderer::render() {
 
 bool Renderer::should_close() { return glfwWindowShouldClose(_window); }
 
+std::string Renderer::read_shader(const std::string &file_path) {
+  std::ifstream file(file_path);
+  if (!file) {
+    throw std::runtime_error("Could not open file: " + file_path);
+  }
+  // else...
+  std::stringstream buffer;
+  buffer << file.rdbuf(); // Read the entire file into the stringstream buffer
+  return buffer.str();    // Return the string from the buffer
+}
 } // namespace tictactoe_astar::renderer

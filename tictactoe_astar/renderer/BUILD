@@ -11,6 +11,10 @@ cc_library(
     name = "renderer",
     srcs = ["renderer.cc"],
     hdrs = ["renderer.h"],
+    data = [
+        "shader.frag",
+        "shader.vert",
+    ],
     linkopts = OPENGL_LINKOPTS,
     deps = [
         "@glew//:glew_static",

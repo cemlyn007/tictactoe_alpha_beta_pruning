@@ -2,6 +2,7 @@
 #define TICTACTOE_ASTAR_RENDERER_H_
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 #include <stdlib.h>
 
 namespace tictactoe_astar::renderer {
@@ -25,6 +26,9 @@ public:
   ~Renderer();
   void render();
   bool should_close();
+
+private:
+  std::string read_shader(const std::string &file_path);
 };
 
 } // namespace tictactoe_astar::renderer
