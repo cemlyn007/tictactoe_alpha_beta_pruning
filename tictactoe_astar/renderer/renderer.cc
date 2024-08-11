@@ -10,6 +10,10 @@ static const char *SHADER_VERTEX_FILE_PATH =
     "tictactoe_astar/renderer/shader.vert";
 static const char *SHADER_FRAGMENT_FILE_PATH =
     "tictactoe_astar/renderer/shader.frag";
+static const float GL_WIDTH = 2.0f;
+static const float GL_MIN_COORDINATE = -1.0f;
+static const float GL_MAX_COORDINATE = 1.0f;
+static const float LINE_WIDTH = 0.025;
 
 #define GL_CALL(cmd)                                                           \
   {                                                                            \
@@ -86,25 +90,23 @@ Renderer::Renderer(size_t size) : _size(size) {
   // else...
   GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
   GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
-  float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
+
+  std::vector<float> vertices = create_grid_vectices();
+  _vertices_size = vertices.size();
+
+  std::cout << "Size " << _vertices_size << std::endl;
 
   GL_CALL(glBindVertexArray(_vertex_array_object));
 
   GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffer_object));
-  GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
-                       GL_STATIC_DRAW));
+  GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * _vertices_size,
+                       vertices.data(), GL_STATIC_DRAW));
 
   GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
                                 (void *)0));
   GL_CALL(glEnableVertexAttribArray(0));
 
   _shader_program = load_shader_program();
-
-  GL_CALL(glUseProgram(_shader_program));
-
-  GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
-                                (void *)0));
-  GL_CALL(glEnableVertexAttribArray(0));
 }
 
 Renderer::~Renderer() {
@@ -121,13 +123,38 @@ void Renderer::render() {
   GL_CALL(glUseProgram(_shader_program));
 
   GL_CALL(glBindVertexArray(_vertex_array_object));
-  GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 3));
+  GL_CALL(glDrawArrays(GL_TRIANGLES, 0, _vertices_size));
 
   GL_CALL(glfwSwapBuffers(_window));
   GL_CALL(glfwPollEvents());
 }
 
 bool Renderer::should_close() { return glfwWindowShouldClose(_window); }
+
+std::vector<float> Renderer::create_grid_vectices() {
+  std::vector<float> vertices;
+  vertices.reserve((_size + 1) * (_size + 1) * 3 * 2);
+  float cell_width = GL_WIDTH / _size;
+  for (int index = 0; index <= _size; ++index) {
+    float x0 = GL_MIN_COORDINATE + index * cell_width - LINE_WIDTH / 2.0f;
+    float x1 = GL_MIN_COORDINATE + index * cell_width + LINE_WIDTH / 2.0f;
+    float x2 = GL_MIN_COORDINATE + index * cell_width - LINE_WIDTH / 2.0f;
+    float x3 = GL_MIN_COORDINATE + index * cell_width + LINE_WIDTH / 2.0f;
+
+    float y0 = GL_MAX_COORDINATE;
+    float y1 = GL_MIN_COORDINATE;
+    float y2 = GL_MIN_COORDINATE;
+    float y3 = GL_MAX_COORDINATE;
+
+    vertices.insert(vertices.end(), {// Row
+                                     y0, x0, 0.0f, y1, x1, 0.0f, y2, x2, 0.0f,
+                                     y0, x0, 0.0f, y3, x3, 0.0f, y1, x1, 0.0f,
+                                     // Column
+                                     x0, y0, 0.0f, x1, y1, 0.0f, x2, y2, 0.0f,
+                                     x0, y0, 0.0f, x3, y3, 0.0f, x1, y1, 0.0f});
+  }
+  return vertices;
+};
 
 GLuint Renderer::load_shader_program() {
   GLuint vertex_shader = load_vertex_shader();

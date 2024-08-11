@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <stdlib.h>
+#include <vector>
 
 namespace tictactoe_astar::renderer {
 
@@ -14,6 +15,7 @@ void terminate();
 class Renderer {
 private:
   const size_t _size;
+  size_t _vertices_size;
   GLFWwindow *_window;
   GLuint _vertex_buffer_object;
   GLuint _vertex_array_object;
@@ -26,6 +28,7 @@ public:
   bool should_close();
 
 private:
+  std::vector<float> create_grid_vectices();
   GLuint load_shader_program();
   GLuint load_vertex_shader();
   GLuint load_fragment_shader();
