@@ -3,6 +3,19 @@
 #include <vector>
 
 namespace tictactoe_astar::renderer {
-void render_nought(int size, float line_width);
-std::vector<float> create_nought_vectices(int size, float line_width);
+
+class Nought {
+private:
+  size_t _vertices_size;
+  GLuint _vertex_buffer_object;
+  GLuint _vertex_array_object;
+
+  std::vector<float> create_nought_vectices(int size, float line_width);
+
+public:
+  Nought(int size, float line_width);
+  ~Nought();
+  void draw();
+};
+
 } // namespace tictactoe_astar::renderer

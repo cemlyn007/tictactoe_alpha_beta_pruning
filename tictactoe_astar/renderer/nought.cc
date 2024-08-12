@@ -10,35 +10,36 @@ static const int CIRCLE_ITERATIONS = 36;
 
 namespace tictactoe_astar::renderer {
 
-void render_nought(int size, float line_width) {
-  auto vertices = create_nought_vectices(size, line_width);
-  auto vertices_size = vertices.size();
+Nought::Nought(int size, float line_width) {
+  GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
+  GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
 
-  GLuint vertex_buffer_object;
-  GLuint vertex_array_object;
-  GL_CALL(glGenBuffers(1, &vertex_buffer_object));
-  GL_CALL(glGenVertexArrays(1, &vertex_array_object));
+  std::vector<float> vertices = create_nought_vectices(size, line_width);
 
-  vertices_size = vertices.size();
+  _vertices_size = vertices.size();
 
-  GL_CALL(glBindVertexArray(vertex_array_object));
+  GL_CALL(glBindVertexArray(_vertex_array_object));
 
-  GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
-  GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices_size,
+  GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffer_object));
+  GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * _vertices_size,
                        vertices.data(), GL_STATIC_DRAW));
 
   GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
                                 (void *)0));
   GL_CALL(glEnableVertexAttribArray(0));
-
-  GL_CALL(glBindVertexArray(vertex_array_object));
-  GL_CALL(glDrawArrays(GL_TRIANGLES, 0, vertices_size));
-
-  glDeleteBuffers(1, &vertex_array_object);
-  glDeleteBuffers(1, &vertex_buffer_object);
 }
 
-std::vector<float> create_nought_vectices(int size, float line_width) {
+Nought::~Nought() {
+  glDeleteBuffers(1, &_vertex_array_object);
+  glDeleteBuffers(1, &_vertex_buffer_object);
+};
+
+void Nought::draw() {
+  GL_CALL(glBindVertexArray(_vertex_array_object));
+  GL_CALL(glDrawArrays(GL_TRIANGLES, 0, _vertices_size));
+}
+
+std::vector<float> Nought::create_nought_vectices(int size, float line_width) {
   float cell_width = GL_WIDTH / size;
 
   std::vector<float> vertices;
