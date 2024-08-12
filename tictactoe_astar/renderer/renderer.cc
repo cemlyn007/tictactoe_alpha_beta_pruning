@@ -1,11 +1,11 @@
 #include "tictactoe_astar/renderer/renderer.h"
 #include "tictactoe_astar/renderer/gl_error_macro.h"
+#include "tictactoe_astar/renderer/nought.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <stdexcept>
 
 static const char *SHADER_VERTEX_FILE_PATH =
@@ -16,7 +16,6 @@ static const float GL_WIDTH = 2.0f;
 static const float GL_MIN_COORDINATE = -1.0f;
 static const float GL_MAX_COORDINATE = 1.0f;
 static const float LINE_WIDTH = 0.025;
-static const int CIRCLE_ITERATIONS = 36;
 
 static void glfwErrorCallback(int error, const char *description) {
   std::cerr << "GLFW Error: " << error << " - " << description << std::endl;
@@ -60,11 +59,8 @@ Renderer::Renderer(size_t size) : _size(size) {
   GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
 
   std::vector<float> vertices = create_grid_vectices();
-  std::vector<float> nought_vertices = create_nought_vectices();
   std::vector<float> cross_vertices = create_cross_vectices();
 
-  vertices.insert(vertices.end(), nought_vertices.begin(),
-                  nought_vertices.end());
   vertices.insert(vertices.end(), cross_vertices.begin(), cross_vertices.end());
 
   _vertices_size = vertices.size();
@@ -98,6 +94,8 @@ void Renderer::render() {
   GL_CALL(glBindVertexArray(_vertex_array_object));
   GL_CALL(glDrawArrays(GL_TRIANGLES, 0, _vertices_size));
 
+  render_nought(_size);
+
   GL_CALL(glfwSwapBuffers(_window));
   GL_CALL(glfwPollEvents());
 }
@@ -126,63 +124,6 @@ std::vector<float> Renderer::create_grid_vectices() {
                                      x0, y0, 0.0f, x1, y1, 0.0f, x2, y2, 0.0f,
                                      x0, y0, 0.0f, x3, y3, 0.0f, x1, y1, 0.0f});
   }
-  return vertices;
-};
-
-std::vector<float> Renderer::create_nought_vectices() {
-  float cell_width = GL_WIDTH / _size;
-
-  std::vector<float> vertices;
-  vertices.reserve(6 * 3 * CIRCLE_ITERATIONS);
-
-  float min_radius = cell_width / 2.0f - LINE_WIDTH;
-  float max_radius = cell_width / 2.0f;
-
-  for (int index = 0; index < CIRCLE_ITERATIONS; ++index) {
-    double previous_radians = (2 * M_PI * (index - 1)) / CIRCLE_ITERATIONS;
-    double radians = (2 * M_PI * index) / CIRCLE_ITERATIONS;
-    double next_radians = (2 * M_PI * (index + 1)) / CIRCLE_ITERATIONS;
-
-    float x0 = min_radius * std::cos(radians);
-    float y0 = min_radius * std::sin(radians);
-
-    float x1 = max_radius * std::cos(next_radians);
-    float y1 = max_radius * std::sin(next_radians);
-
-    float x2 = max_radius * std::cos(radians);
-    float y2 = max_radius * std::sin(radians);
-
-    float x3 = min_radius * std::cos(previous_radians);
-    float y3 = min_radius * std::sin(previous_radians);
-
-    float x4 = min_radius * std::cos(radians);
-    float y4 = min_radius * std::sin(radians);
-
-    float x5 = max_radius * std::cos(radians);
-    float y5 = max_radius * std::sin(radians);
-
-    vertices.insert(vertices.end(), {
-                                        x0,
-                                        y0,
-                                        0.0f,
-                                        x1,
-                                        y1,
-                                        0.0f,
-                                        x2,
-                                        y2,
-                                        0.0f,
-                                        x3,
-                                        y3,
-                                        0.0f,
-                                        x4,
-                                        y4,
-                                        0.0f,
-                                        x5,
-                                        y5,
-                                        0.0f,
-                                    });
-  }
-
   return vertices;
 };
 

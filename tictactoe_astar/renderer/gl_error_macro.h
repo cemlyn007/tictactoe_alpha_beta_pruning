@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <sstream>
 
 namespace tictactoe_astar::renderer {
 

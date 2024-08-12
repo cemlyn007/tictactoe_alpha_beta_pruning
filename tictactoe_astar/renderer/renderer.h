@@ -29,7 +29,6 @@ public:
 
 private:
   std::vector<float> create_grid_vectices();
-  std::vector<float> create_nought_vectices();
   std::vector<float> create_cross_vectices();
   GLuint load_shader_program();
   GLuint load_vertex_shader();
