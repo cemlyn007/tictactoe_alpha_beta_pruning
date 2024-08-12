@@ -1,6 +1,7 @@
 #include "tictactoe_astar/renderer/renderer.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -92,6 +93,10 @@ Renderer::Renderer(size_t size) : _size(size) {
   GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
 
   std::vector<float> vertices = create_grid_vectices();
+  std::vector<float> cross_vertices = create_cross_vectices();
+
+  vertices.insert(vertices.end(), cross_vertices.begin(), cross_vertices.end());
+
   _vertices_size = vertices.size();
 
   GL_CALL(glBindVertexArray(_vertex_array_object));
@@ -152,6 +157,54 @@ std::vector<float> Renderer::create_grid_vectices() {
                                      x0, y0, 0.0f, x3, y3, 0.0f, x1, y1, 0.0f});
   }
   return vertices;
+};
+
+std::vector<float> Renderer::create_cross_vectices() {
+  float cell_width = GL_WIDTH / _size;
+
+  float half_line_width = LINE_WIDTH / 2.0f;
+
+  float top_right_corner = cell_width;
+
+  float x0 = std::cos(M_PI / 4) * half_line_width + GL_MIN_COORDINATE;
+  float y0 = -std::sin(M_PI / 4) * half_line_width + GL_MIN_COORDINATE;
+
+  float x1 = -std::cos(M_PI / 4) * half_line_width + GL_MIN_COORDINATE;
+  float y1 = std::sin(M_PI / 4) * half_line_width + GL_MIN_COORDINATE;
+
+  float x2 = -std::cos(M_PI / 4) * half_line_width + GL_MIN_COORDINATE +
+             top_right_corner;
+  float y2 = std::sin(M_PI / 4) * half_line_width + GL_MIN_COORDINATE +
+             top_right_corner;
+
+  float x3 = std::cos(M_PI / 4) * half_line_width + GL_MIN_COORDINATE +
+             top_right_corner;
+  float y3 = -std::sin(M_PI / 4) * half_line_width + GL_MIN_COORDINATE +
+             top_right_corner;
+
+  float x4 =
+      std::cos(M_PI / 4) * half_line_width + GL_MIN_COORDINATE + cell_width;
+  float y4 = std::sin(M_PI / 4) * half_line_width + GL_MIN_COORDINATE;
+
+  float x5 =
+      -std::cos(M_PI / 4) * half_line_width + GL_MIN_COORDINATE + cell_width;
+  float y5 = -std::sin(M_PI / 4) * half_line_width + GL_MIN_COORDINATE;
+
+  float x6 = -std::cos(M_PI / 4) * half_line_width + GL_MIN_COORDINATE;
+  float y6 =
+      -std::sin(M_PI / 4) * half_line_width + GL_MIN_COORDINATE + cell_width;
+
+  float x7 = std::cos(M_PI / 4) * half_line_width + GL_MIN_COORDINATE;
+  float y7 =
+      std::sin(M_PI / 4) * half_line_width + GL_MIN_COORDINATE + cell_width;
+
+  return {
+      x0, y0, 0.0f, x1, y1, 0.0f, x2, y2, 0.0f,
+      x2, y2, 0.0f, x3, y3, 0.0f, x0, y0, 0.0f,
+
+      x4, y4, 0.0f, x5, y5, 0.0f, x6, y6, 0.0f,
+      x6, y6, 0.0f, x7, y7, 0.0f, x4, y4, 0.0f,
+  };
 };
 
 GLuint Renderer::load_shader_program() {
