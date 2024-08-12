@@ -94,7 +94,7 @@ void Renderer::render() {
   GL_CALL(glBindVertexArray(_vertex_array_object));
   GL_CALL(glDrawArrays(GL_TRIANGLES, 0, _vertices_size));
 
-  render_nought(_size);
+  render_nought(_size, LINE_WIDTH);
 
   GL_CALL(glfwSwapBuffers(_window));
   GL_CALL(glfwPollEvents());

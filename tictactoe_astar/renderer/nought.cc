@@ -6,13 +6,12 @@
 #include <cmath>
 
 static const float GL_WIDTH = 2.0f;
-static const float LINE_WIDTH = 0.025;
 static const int CIRCLE_ITERATIONS = 36;
 
 namespace tictactoe_astar::renderer {
 
-void render_nought(int size) {
-  auto vertices = create_nought_vectices(size);
+void render_nought(int size, float line_width) {
+  auto vertices = create_nought_vectices(size, line_width);
   auto vertices_size = vertices.size();
 
   GLuint vertex_buffer_object;
@@ -39,13 +38,13 @@ void render_nought(int size) {
   glDeleteBuffers(1, &vertex_buffer_object);
 }
 
-std::vector<float> create_nought_vectices(int size) {
+std::vector<float> create_nought_vectices(int size, float line_width) {
   float cell_width = GL_WIDTH / size;
 
   std::vector<float> vertices;
   vertices.reserve(6 * 3 * CIRCLE_ITERATIONS);
 
-  float min_radius = cell_width / 2.0f - LINE_WIDTH;
+  float min_radius = cell_width / 2.0f - line_width;
   float max_radius = cell_width / 2.0f;
 
   for (int index = 0; index < CIRCLE_ITERATIONS; ++index) {
