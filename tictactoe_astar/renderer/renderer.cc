@@ -83,7 +83,7 @@ Renderer::Renderer(size_t size) : _size(size) {
 }
 
 Renderer::~Renderer() {
-  glDeleteShader(_shader_program);
+  glDeleteProgram(_shader_program);
   glDeleteBuffers(1, &_vertex_array_object);
   glDeleteBuffers(1, &_vertex_buffer_object);
   glfwDestroyWindow(_window);
