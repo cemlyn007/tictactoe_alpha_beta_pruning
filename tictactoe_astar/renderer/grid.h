@@ -12,12 +12,13 @@ private:
   GLuint _vertex_array_object;
   Shader &_shader;
 
-  std::vector<float> create_grid_vectices(int size, float line_width);
-
 public:
   Grid(int size, float line_width, Shader &shader);
   ~Grid();
   void draw();
+
+private:
+  std::vector<float> create_grid_vectices(int size, float line_width);
 };
 
 } // namespace tictactoe_astar::renderer

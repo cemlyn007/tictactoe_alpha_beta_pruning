@@ -21,6 +21,7 @@ private:
 public:
   Renderer(size_t size);
   ~Renderer();
+
   void render();
   bool should_close();
 

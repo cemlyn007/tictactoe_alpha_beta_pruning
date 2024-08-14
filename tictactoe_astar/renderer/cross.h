@@ -14,13 +14,14 @@ private:
   Shader &_shader;
   float _offset[2];
 
-  std::vector<float> create_cross_vectices(int size, float line_width);
-
 public:
   Cross(int size, float line_width, Shader &shader);
   ~Cross();
   void set_location(int location);
   void draw();
+
+private:
+  std::vector<float> create_cross_vectices(int size, float line_width);
 };
 
 } // namespace tictactoe_astar::renderer

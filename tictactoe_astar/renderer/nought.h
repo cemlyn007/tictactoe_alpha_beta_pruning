@@ -14,13 +14,14 @@ private:
   Shader &_shader;
   float _offset[2];
 
-  std::vector<float> create_nought_vectices(int size, float line_width);
-
 public:
   Nought(int size, float line_width, Shader &shader);
   ~Nought();
   void set_location(int location);
   void draw();
+
+private:
+  std::vector<float> create_nought_vectices(int size, float line_width);
 };
 
 } // namespace tictactoe_astar::renderer
