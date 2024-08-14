@@ -1,5 +1,6 @@
 #ifndef TICTACTOE_ASTAR_RENDERER_H_
 #define TICTACTOE_ASTAR_RENDERER_H_
+#include "tictactoe_astar/renderer/shader.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -19,7 +20,7 @@ private:
   GLFWwindow *_window;
   GLuint _vertex_buffer_object;
   GLuint _vertex_array_object;
-  GLuint _shader_program;
+  Shader _shader;
 
 public:
   Renderer(size_t size);
@@ -28,10 +29,8 @@ public:
   bool should_close();
 
 private:
+  GLFWwindow *create_window();
   std::vector<float> create_grid_vectices();
-  GLuint load_shader_program();
-  GLuint load_vertex_shader();
-  GLuint load_fragment_shader();
   std::string read_shader(const std::string &file_path);
 };
 

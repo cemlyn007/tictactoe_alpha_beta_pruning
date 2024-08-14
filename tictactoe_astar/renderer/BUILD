@@ -20,6 +20,19 @@ cc_library(
         ":cross",
         ":gl_error_macro",
         ":nought",
+        ":shader",
+        "@glew//:glew_static",
+        "@glfw",
+    ],
+)
+
+cc_library(
+    name = "shader",
+    srcs = ["shader.cc"],
+    hdrs = ["shader.h"],
+    linkopts = OPENGL_LINKOPTS,
+    deps = [
+        ":gl_error_macro",
         "@glew//:glew_static",
         "@glfw",
     ],
