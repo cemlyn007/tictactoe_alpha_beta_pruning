@@ -15,10 +15,7 @@ void terminate();
 class Renderer {
 private:
   const size_t _size;
-  size_t _vertices_size;
   GLFWwindow *_window;
-  GLuint _vertex_buffer_object;
-  GLuint _vertex_array_object;
   Shader _shader;
 
 public:
