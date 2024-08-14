@@ -7,6 +7,7 @@
 
 static const float GL_WIDTH = 2.0f;
 static const int CIRCLE_ITERATIONS = 36;
+static const float GL_MIN_COORDINATE = -1.0f;
 
 namespace tictactoe_astar::renderer {
 
@@ -42,6 +43,8 @@ void Nought::draw() {
 std::vector<float> Nought::create_nought_vectices(int size, float line_width) {
   float cell_width = GL_WIDTH / size;
 
+  float offset = GL_MIN_COORDINATE + (cell_width / 2);
+
   std::vector<float> vertices;
   vertices.reserve(6 * 3 * CIRCLE_ITERATIONS);
 
@@ -53,23 +56,23 @@ std::vector<float> Nought::create_nought_vectices(int size, float line_width) {
     double radians = (2 * M_PI * index) / CIRCLE_ITERATIONS;
     double next_radians = (2 * M_PI * (index + 1)) / CIRCLE_ITERATIONS;
 
-    float x0 = min_radius * std::cos(radians);
-    float y0 = min_radius * std::sin(radians);
+    float x0 = min_radius * std::cos(radians) + offset;
+    float y0 = min_radius * std::sin(radians) + offset;
 
-    float x1 = max_radius * std::cos(next_radians);
-    float y1 = max_radius * std::sin(next_radians);
+    float x1 = max_radius * std::cos(next_radians) + offset;
+    float y1 = max_radius * std::sin(next_radians) + offset;
 
-    float x2 = max_radius * std::cos(radians);
-    float y2 = max_radius * std::sin(radians);
+    float x2 = max_radius * std::cos(radians) + offset;
+    float y2 = max_radius * std::sin(radians) + offset;
 
-    float x3 = min_radius * std::cos(previous_radians);
-    float y3 = min_radius * std::sin(previous_radians);
+    float x3 = min_radius * std::cos(previous_radians) + offset;
+    float y3 = min_radius * std::sin(previous_radians) + offset;
 
-    float x4 = min_radius * std::cos(radians);
-    float y4 = min_radius * std::sin(radians);
+    float x4 = min_radius * std::cos(radians) + offset;
+    float y4 = min_radius * std::sin(radians) + offset;
 
-    float x5 = max_radius * std::cos(radians);
-    float y5 = max_radius * std::sin(radians);
+    float x5 = max_radius * std::cos(radians) + offset;
+    float y5 = max_radius * std::sin(radians) + offset;
 
     vertices.insert(vertices.end(), {
                                         x0,
