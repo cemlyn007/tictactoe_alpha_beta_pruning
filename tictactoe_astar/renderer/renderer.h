@@ -3,9 +3,8 @@
 #include "tictactoe_astar/renderer/shader.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
 #include <stdlib.h>
-#include <vector>
+#include <string>
 
 namespace tictactoe_astar::renderer {
 
@@ -30,7 +29,6 @@ public:
 
 private:
   GLFWwindow *create_window();
-  std::vector<float> create_grid_vectices();
   std::string read_shader(const std::string &file_path);
 };
 

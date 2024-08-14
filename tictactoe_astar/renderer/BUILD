@@ -19,6 +19,7 @@ cc_library(
     deps = [
         ":cross",
         ":gl_error_macro",
+        ":grid",
         ":nought",
         ":shader",
         "@glew//:glew_static",
@@ -30,6 +31,18 @@ cc_library(
     name = "shader",
     srcs = ["shader.cc"],
     hdrs = ["shader.h"],
+    linkopts = OPENGL_LINKOPTS,
+    deps = [
+        ":gl_error_macro",
+        "@glew//:glew_static",
+        "@glfw",
+    ],
+)
+
+cc_library(
+    name = "grid",
+    srcs = ["grid.cc"],
+    hdrs = ["grid.h"],
     linkopts = OPENGL_LINKOPTS,
     deps = [
         ":gl_error_macro",
