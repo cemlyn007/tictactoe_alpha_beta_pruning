@@ -5,6 +5,7 @@
 #include "tictactoe_astar/renderer/nought.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -52,11 +53,15 @@ void Renderer::render() {
 
   _shader.use();
 
-  Grid(_size, LINE_WIDTH).draw();
+  Grid(_size, LINE_WIDTH, _shader).draw();
 
-  Nought(_size, LINE_WIDTH).draw();
+  Nought nought(_size, LINE_WIDTH, _shader);
+  nought.set_location(std::rand() % (_size * _size));
+  nought.draw();
 
-  Cross(_size, LINE_WIDTH).draw();
+  Cross cross(_size, LINE_WIDTH, _shader);
+  cross.set_location(std::rand() % (_size * _size));
+  cross.draw();
 
   GL_CALL(glfwSwapBuffers(_window));
   GL_CALL(glfwPollEvents());

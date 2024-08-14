@@ -33,6 +33,11 @@ Shader::~Shader() { glDeleteProgram(_program); }
 
 void Shader::use() { GL_CALL(glUseProgram(_program)); }
 
+void Shader::set_uniform(std::string name, float x, float y) {
+  GLuint location = glGetUniformLocation(_program, name.c_str());
+  GL_CALL(glUniform2f(location, x, y););
+}
+
 GLuint Shader::load_vertex_shader(std::string vertex_source_code) {
   const char *vertex_shader_c_str = vertex_source_code.c_str();
   GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);

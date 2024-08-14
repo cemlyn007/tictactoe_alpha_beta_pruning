@@ -11,7 +11,8 @@ static const float GL_MIN_COORDINATE = -1.0f;
 
 namespace tictactoe_astar::renderer {
 
-Nought::Nought(int size, float line_width) {
+Nought::Nought(int size, float line_width, Shader &shader)
+    : _size(size), _shader(shader) {
   GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
   GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
 
@@ -24,7 +25,6 @@ Nought::Nought(int size, float line_width) {
   GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffer_object));
   GL_CALL(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * _vertices_size,
                        vertices.data(), GL_STATIC_DRAW));
-
   GL_CALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
                                 (void *)0));
   GL_CALL(glEnableVertexAttribArray(0));
@@ -35,7 +35,16 @@ Nought::~Nought() {
   glDeleteBuffers(1, &_vertex_buffer_object);
 };
 
+void Nought::set_location(int location) {
+  int row = (int)location / _size;
+  int column = location % _size;
+  float cell_width = GL_WIDTH / _size;
+  _offset[0] = column * cell_width;
+  _offset[1] = row * cell_width;
+}
+
 void Nought::draw() {
+  _shader.set_uniform("offset", _offset[0], _offset[1]);
   GL_CALL(glBindVertexArray(_vertex_array_object));
   GL_CALL(glDrawArrays(GL_TRIANGLES, 0, _vertices_size));
 }

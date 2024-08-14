@@ -10,7 +10,7 @@ static const float GL_MAX_COORDINATE = 1.0f;
 
 namespace tictactoe_astar::renderer {
 
-Grid::Grid(int size, float line_width) {
+Grid::Grid(int size, float line_width, Shader &shader) : _shader(shader) {
   GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
   GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
 
@@ -35,6 +35,7 @@ Grid::~Grid() {
 };
 
 void Grid::draw() {
+  _shader.set_uniform("offset", 0.0f, 0.0f);
   GL_CALL(glBindVertexArray(_vertex_array_object));
   GL_CALL(glDrawArrays(GL_TRIANGLES, 0, _vertices_size));
 }

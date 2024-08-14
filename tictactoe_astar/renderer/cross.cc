@@ -10,7 +10,8 @@ static const float GL_MIN_COORDINATE = -1.0f;
 
 namespace tictactoe_astar::renderer {
 
-Cross::Cross(int size, float line_width) {
+Cross::Cross(int size, float line_width, Shader &shader)
+    : _size(size), _shader(shader) {
   GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
   GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
 
@@ -34,7 +35,16 @@ Cross::~Cross() {
   glDeleteBuffers(1, &_vertex_buffer_object);
 };
 
+void Cross::set_location(int location) {
+  int row = (int)location / _size;
+  int column = location % _size;
+  float cell_width = GL_WIDTH / _size;
+  _offset[0] = column * cell_width;
+  _offset[1] = row * cell_width;
+}
+
 void Cross::draw() {
+  _shader.set_uniform("offset", _offset[0], _offset[1]);
   GL_CALL(glBindVertexArray(_vertex_array_object));
   GL_CALL(glDrawArrays(GL_TRIANGLES, 0, _vertices_size));
 }

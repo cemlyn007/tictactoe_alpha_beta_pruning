@@ -1,3 +1,5 @@
+#ifndef TICTACTOE_ASTAR_RENDERER_SHADER_H_
+#define TICTACTOE_ASTAR_RENDERER_SHADER_H_
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
@@ -11,6 +13,8 @@ public:
   ~Shader();
   void use();
 
+  void set_uniform(std::string name, float x, float y);
+
 private:
   GLuint _program;
 
@@ -21,3 +25,4 @@ private:
 };
 
 } // namespace tictactoe_astar::renderer
+#endif

@@ -46,6 +46,7 @@ cc_library(
     linkopts = OPENGL_LINKOPTS,
     deps = [
         ":gl_error_macro",
+        ":shader",
         "@glew//:glew_static",
         "@glfw",
     ],
@@ -58,6 +59,7 @@ cc_library(
     linkopts = OPENGL_LINKOPTS,
     deps = [
         ":gl_error_macro",
+        ":shader",
         "@glew//:glew_static",
         "@glfw",
     ],
@@ -70,6 +72,7 @@ cc_library(
     linkopts = OPENGL_LINKOPTS,
     deps = [
         ":gl_error_macro",
+        ":shader",
         "@glew//:glew_static",
         "@glfw",
     ],
