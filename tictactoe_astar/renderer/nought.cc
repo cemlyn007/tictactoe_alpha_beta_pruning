@@ -11,7 +11,7 @@ static const float GL_MIN_COORDINATE = -1.0f;
 
 namespace tictactoe_astar::renderer {
 
-Nought::Nought(int size, float line_width, Shader &shader)
+Nought::Nought(int size, float line_width, Shader *shader)
     : _size(size), _shader(shader) {
   GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
   GL_CALL(glGenVertexArrays(1, &_vertex_array_object));
@@ -30,6 +30,16 @@ Nought::Nought(int size, float line_width, Shader &shader)
   GL_CALL(glEnableVertexAttribArray(0));
 }
 
+Nought::Nought(Nought &&other)
+    : _size(other._size), _vertices_size(other._vertices_size),
+      _vertex_buffer_object(other._vertex_buffer_object),
+      _vertex_array_object(other._vertex_array_object), _shader(other._shader) {
+  // We set these to 0 so that when the original object destructor is called,
+  // the OpenGL objects are not destroyed.
+  other._vertex_array_object = 0;
+  other._vertex_buffer_object = 0;
+}
+
 Nought::~Nought() {
   glDeleteBuffers(1, &_vertex_array_object);
   glDeleteBuffers(1, &_vertex_buffer_object);
@@ -44,7 +54,7 @@ void Nought::set_location(int location) {
 }
 
 void Nought::draw() {
-  _shader.set_uniform("offset", _offset[0], _offset[1]);
+  _shader->set_uniform("offset", _offset[0], _offset[1]);
   GL_CALL(glBindVertexArray(_vertex_array_object));
   GL_CALL(glDrawArrays(GL_TRIANGLES, 0, _vertices_size));
 }

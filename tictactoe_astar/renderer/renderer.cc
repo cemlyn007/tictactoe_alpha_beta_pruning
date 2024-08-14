@@ -40,10 +40,19 @@ void terminate() {
   glfwTerminate();
 };
 
-Renderer::Renderer(size_t size)
+Renderer::Renderer(int size)
     : _size(size), _window(create_window()),
       _shader(read_shader(SHADER_VERTEX_FILE_PATH),
-              read_shader(SHADER_FRAGMENT_FILE_PATH)) {}
+              read_shader(SHADER_FRAGMENT_FILE_PATH)),
+      _grid(_size, LINE_WIDTH, _shader) {
+  int max_of_each = ((_size + 1) / 2) * ((_size + 1) / 2) + 1;
+  for (int index = 0; index < max_of_each; ++index) {
+    _noughts.push_back(Nought(_size, LINE_WIDTH, &_shader));
+    _noughts[index].set_location(0);
+    _crosses.push_back(Cross(_size, LINE_WIDTH, &_shader));
+    _crosses[index].set_location(0);
+  }
+}
 
 Renderer::~Renderer() { glfwDestroyWindow(_window); };
 
@@ -53,15 +62,15 @@ void Renderer::render() {
 
   _shader.use();
 
-  Grid(_size, LINE_WIDTH, _shader).draw();
-
-  Nought nought(_size, LINE_WIDTH, _shader);
-  nought.set_location(std::rand() % (_size * _size));
-  nought.draw();
-
-  Cross cross(_size, LINE_WIDTH, _shader);
-  cross.set_location(std::rand() % (_size * _size));
-  cross.draw();
+  _grid.draw();
+  for (auto &nought : _noughts) {
+    nought.set_location(std::rand() % (_size * _size));
+    nought.draw();
+  }
+  for (auto &cross : _crosses) {
+    cross.set_location(std::rand() % (_size * _size));
+    cross.draw();
+  }
 
   GL_CALL(glfwSwapBuffers(_window));
   GL_CALL(glfwPollEvents());
