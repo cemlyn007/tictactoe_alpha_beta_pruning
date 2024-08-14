@@ -17,6 +17,7 @@ cc_library(
     ],
     linkopts = OPENGL_LINKOPTS,
     deps = [
+        ":cross",
         ":gl_error_macro",
         ":nought",
         "@glew//:glew_static",
@@ -28,6 +29,18 @@ cc_library(
     name = "nought",
     srcs = ["nought.cc"],
     hdrs = ["nought.h"],
+    linkopts = OPENGL_LINKOPTS,
+    deps = [
+        ":gl_error_macro",
+        "@glew//:glew_static",
+        "@glfw",
+    ],
+)
+
+cc_library(
+    name = "cross",
+    srcs = ["cross.cc"],
+    hdrs = ["cross.h"],
     linkopts = OPENGL_LINKOPTS,
     deps = [
         ":gl_error_macro",
