@@ -25,14 +25,14 @@ private:
   std::vector<Cross> _crosses;
 
 public:
-  Renderer(int size);
+  Renderer(int size, int window_width, int window_height);
   ~Renderer();
 
   void render();
   bool should_close();
 
 private:
-  GLFWwindow *create_window();
+  GLFWwindow *create_window(int width, int height);
   std::string read_shader(const std::string &file_path);
 };
 

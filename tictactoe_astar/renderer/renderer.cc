@@ -40,8 +40,8 @@ void terminate() {
   glfwTerminate();
 };
 
-Renderer::Renderer(int size)
-    : _size(size), _window(create_window()),
+Renderer::Renderer(int size, int window_width, int window_height)
+    : _size(size), _window(create_window(window_width, window_height)),
       _shader(read_shader(SHADER_VERTEX_FILE_PATH),
               read_shader(SHADER_FRAGMENT_FILE_PATH)),
       _grid(_size, LINE_WIDTH, _shader) {
@@ -78,8 +78,9 @@ void Renderer::render() {
 
 bool Renderer::should_close() { return glfwWindowShouldClose(_window); }
 
-GLFWwindow *Renderer::create_window() {
-  GLFWwindow *window = glfwCreateWindow(640, 640, "Hello World", NULL, NULL);
+GLFWwindow *Renderer::create_window(int width, int height) {
+  GLFWwindow *window =
+      glfwCreateWindow(width, height, "Tic Tac Toe", NULL, NULL);
   if (!window) {
     throw std::runtime_error("Could not create window");
   }

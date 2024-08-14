@@ -5,7 +5,7 @@ int main() {
   tictactoe_astar::renderer::init();
   tictactoe_astar::engine::Engine engine;
   engine.dummy_engine();
-  tictactoe_astar::renderer::Renderer renderer(3);
+  tictactoe_astar::renderer::Renderer renderer(3, 1080, 1080);
   while (!renderer.should_close()) {
     renderer.render();
   }
