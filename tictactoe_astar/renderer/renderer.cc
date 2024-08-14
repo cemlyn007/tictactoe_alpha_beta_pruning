@@ -10,10 +10,9 @@
 #include <stdexcept>
 
 static const char *SHADER_VERTEX_FILE_PATH =
-    "tictactoe_astar/renderer/shader.vert";
+    "tictactoe_astar/renderer/shaders/shader.vert";
 static const char *SHADER_FRAGMENT_FILE_PATH =
-    "tictactoe_astar/renderer/shader.frag";
-
+    "tictactoe_astar/renderer/shaders/shader.frag";
 static const float LINE_WIDTH = 0.025;
 
 static void glfwErrorCallback(int error, const char *description) {

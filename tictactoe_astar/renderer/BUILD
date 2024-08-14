@@ -12,8 +12,8 @@ cc_library(
     srcs = ["renderer.cc"],
     hdrs = ["renderer.h"],
     data = [
-        "shader.frag",
-        "shader.vert",
+        "//tictactoe_astar/renderer/shaders:shader.frag",
+        "//tictactoe_astar/renderer/shaders:shader.vert",
     ],
     linkopts = OPENGL_LINKOPTS,
     deps = [
