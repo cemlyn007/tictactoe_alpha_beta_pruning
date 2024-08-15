@@ -44,7 +44,8 @@ Renderer::Renderer(int size, int window_width, int window_height)
     : _size(size), _window(create_window(window_width, window_height)),
       _shader(read_shader(SHADER_VERTEX_FILE_PATH),
               read_shader(SHADER_FRAGMENT_FILE_PATH)),
-      _grid(_size, LINE_WIDTH, _shader) {
+      _grid(_size, LINE_WIDTH, _shader), _mouse_click(false),
+      _escape_pressed(false) {
   int max_of_each = ((_size + 1) / 2) * ((_size + 1) / 2) + 1;
   for (int index = 0; index < max_of_each; ++index) {
     _noughts.push_back(Nought(_size, LINE_WIDTH, &_shader));
@@ -76,7 +77,25 @@ void Renderer::render() {
   GL_CALL(glfwPollEvents());
 }
 
-bool Renderer::should_close() { return glfwWindowShouldClose(_window); }
+bool Renderer::should_close() {
+  return glfwWindowShouldClose(_window) || _escape_pressed;
+}
+
+std::tuple<int, bool> Renderer::get_selected_location() {
+  int width;
+  int height;
+  glfwGetWindowSize(_window, &width, &height);
+  float cell_width_in_pixels = float(width) / _size;
+  float cell_height_in_pixels = float(height) / _size;
+  // GLFW gives the y position where 0 is at the top of the window.
+  double mouse_y_position_in_pixels = height - _mouse_position_in_pixels[1];
+  int row = mouse_y_position_in_pixels / cell_height_in_pixels;
+  int column = _mouse_position_in_pixels[0] / cell_width_in_pixels;
+  int location = row * _size + column;
+  bool mouse_clicked = _mouse_click;
+  _mouse_click = false;
+  return {location, mouse_clicked};
+};
 
 GLFWwindow *Renderer::create_window(int width, int height) {
   GLFWwindow *window =
@@ -93,8 +112,38 @@ GLFWwindow *Renderer::create_window(int width, int height) {
         std::string("Error initializing glew: ") +
         reinterpret_cast<const char *>(glewGetErrorString(error)));
   }
+  glfwSetWindowUserPointer(window, this);
+  glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
+  glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
+  glfwSetKeyCallback(window, key_callback);
+  glfwSetMouseButtonCallback(window, mouse_button_callback);
+  glfwSetCursorPosCallback(window, cursor_position_callback);
   return window;
 };
+
+void Renderer::key_callback(GLFWwindow *window, int key, int scancode,
+                            int action, int mods) {
+  Renderer *renderer =
+      static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    (renderer->_escape_pressed) = true;
+}
+
+void Renderer::mouse_button_callback(GLFWwindow *window, int button, int action,
+                                     int mods) {
+  Renderer *renderer =
+      static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+  if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    (renderer->_mouse_click) = true;
+}
+
+void Renderer::cursor_position_callback(GLFWwindow *window, double xpos,
+                                        double ypos) {
+  Renderer *renderer =
+      static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+  (renderer->_mouse_position_in_pixels[0]) = xpos;
+  (renderer->_mouse_position_in_pixels[1]) = ypos;
+}
 
 std::string Renderer::read_shader(const std::string &file_path) {
   std::ifstream file(file_path);

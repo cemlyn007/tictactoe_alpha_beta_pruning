@@ -23,6 +23,9 @@ private:
   Grid _grid;
   std::vector<Nought> _noughts;
   std::vector<Cross> _crosses;
+  double _mouse_position_in_pixels[2];
+  bool _mouse_click;
+  bool _escape_pressed;
 
 public:
   Renderer(int size, int window_width, int window_height);
@@ -30,9 +33,16 @@ public:
 
   void render();
   bool should_close();
+  std::tuple<int, bool> get_selected_location();
 
 private:
   GLFWwindow *create_window(int width, int height);
+  static void key_callback(GLFWwindow *window, int key, int scancode,
+                           int action, int mods);
+  static void mouse_button_callback(GLFWwindow *window, int button, int action,
+                                    int mods);
+  static void cursor_position_callback(GLFWwindow *window, double xpos,
+                                       double ypos);
   std::string read_shader(const std::string &file_path);
 };
 
