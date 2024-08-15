@@ -15,7 +15,7 @@ int main() {
   }
 
   bool noughts_turn = true;
-  tictactoe_astar::renderer::Renderer renderer(SIZE, 1080, 1080);
+  tictactoe_astar::renderer::Renderer renderer(SIZE, 1080, 1080, 0.025);
   while (!renderer.should_close()) {
     renderer.render(grid);
     std::tuple<int, bool> result = renderer.get_selected_location();

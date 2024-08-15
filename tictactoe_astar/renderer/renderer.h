@@ -29,7 +29,7 @@ private:
   bool _escape_pressed;
 
 public:
-  Renderer(int size, int window_width, int window_height);
+  Renderer(int size, int window_width, int window_height, float line_width);
   ~Renderer();
 
   void render(const std::vector<engine::Occupancy> &grid);

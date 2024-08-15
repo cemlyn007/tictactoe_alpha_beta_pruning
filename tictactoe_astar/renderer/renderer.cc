@@ -14,7 +14,6 @@ static const char *SHADER_VERTEX_FILE_PATH =
     "tictactoe_astar/renderer/shaders/shader.vert";
 static const char *SHADER_FRAGMENT_FILE_PATH =
     "tictactoe_astar/renderer/shaders/shader.frag";
-static const float LINE_WIDTH = 0.025;
 
 static void glfwErrorCallback(int error, const char *description) {
   std::cerr << "GLFW Error: " << error << " - " << description << std::endl;
@@ -40,17 +39,18 @@ void terminate() {
   glfwTerminate();
 };
 
-Renderer::Renderer(int size, int window_width, int window_height)
+Renderer::Renderer(int size, int window_width, int window_height,
+                   float line_width)
     : _size(size), _window(create_window(window_width, window_height)),
       _shader(read_shader(SHADER_VERTEX_FILE_PATH),
               read_shader(SHADER_FRAGMENT_FILE_PATH)),
-      _grid(_size, LINE_WIDTH, _shader), _mouse_click(false),
+      _grid(_size, line_width, _shader), _mouse_click(false),
       _escape_pressed(false) {
   int max_of_each = _size * _size;
   for (int index = 0; index < max_of_each; ++index) {
-    _noughts.push_back(Nought(_size, LINE_WIDTH, &_shader));
+    _noughts.push_back(Nought(_size, line_width, &_shader));
     _noughts[index].set_location(0);
-    _crosses.push_back(Cross(_size, LINE_WIDTH, &_shader));
+    _crosses.push_back(Cross(_size, line_width, &_shader));
     _crosses[index].set_location(0);
   }
 }
