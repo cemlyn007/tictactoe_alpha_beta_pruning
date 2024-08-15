@@ -1,5 +1,6 @@
 #ifndef TICTACTOE_ASTAR_RENDERER_H_
 #define TICTACTOE_ASTAR_RENDERER_H_
+#include "tictactoe_astar/engine/engine.h"
 #include "tictactoe_astar/renderer/cross.h"
 #include "tictactoe_astar/renderer/grid.h"
 #include "tictactoe_astar/renderer/nought.h"
@@ -31,7 +32,7 @@ public:
   Renderer(int size, int window_width, int window_height);
   ~Renderer();
 
-  void render();
+  void render(const std::vector<engine::Occupancy> &grid);
   bool should_close();
   std::tuple<int, bool> get_selected_location();
 

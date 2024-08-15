@@ -3,6 +3,8 @@
 
 namespace tictactoe_astar::engine {
 
+enum Occupancy { EMPTY, NOUGHT, CROSS };
+
 class Engine {
 public:
   Engine();

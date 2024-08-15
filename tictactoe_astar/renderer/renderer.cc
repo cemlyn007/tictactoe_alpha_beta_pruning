@@ -46,7 +46,7 @@ Renderer::Renderer(int size, int window_width, int window_height)
               read_shader(SHADER_FRAGMENT_FILE_PATH)),
       _grid(_size, LINE_WIDTH, _shader), _mouse_click(false),
       _escape_pressed(false) {
-  int max_of_each = ((_size + 1) / 2) * ((_size + 1) / 2) + 1;
+  int max_of_each = _size * _size;
   for (int index = 0; index < max_of_each; ++index) {
     _noughts.push_back(Nought(_size, LINE_WIDTH, &_shader));
     _noughts[index].set_location(0);
@@ -57,20 +57,31 @@ Renderer::Renderer(int size, int window_width, int window_height)
 
 Renderer::~Renderer() { glfwDestroyWindow(_window); };
 
-void Renderer::render() {
+void Renderer::render(const std::vector<engine::Occupancy> &grid) {
   glfwMakeContextCurrent(_window);
   GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
   _shader.use();
 
   _grid.draw();
-  for (auto &nought : _noughts) {
-    nought.set_location(std::rand() % (_size * _size));
-    nought.draw();
-  }
-  for (auto &cross : _crosses) {
-    cross.set_location(std::rand() % (_size * _size));
-    cross.draw();
+
+  int free_nought_index = 0;
+  int free_cross_index = 0;
+  int location = 0;
+  for (const engine::Occupancy &occupancy : grid) {
+    if (occupancy == engine::Occupancy::EMPTY) {
+    } else if (occupancy == engine::Occupancy::NOUGHT) {
+      _noughts[free_nought_index].set_location(location);
+      _noughts[free_nought_index].draw();
+      ++free_nought_index;
+    } else if (occupancy == engine::Occupancy::CROSS) {
+      _crosses[free_cross_index].set_location(location);
+      _crosses[free_cross_index].draw();
+      ++free_cross_index;
+    } else {
+      throw std::runtime_error("Occupancy unknown!");
+    }
+    ++location;
   }
 
   GL_CALL(glfwSwapBuffers(_window));

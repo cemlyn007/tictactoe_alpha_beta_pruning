@@ -22,6 +22,7 @@ cc_library(
         ":grid",
         ":nought",
         ":shader",
+        "//tictactoe_astar/engine",
         "@glew//:glew_static",
         "@glfw",
     ],
