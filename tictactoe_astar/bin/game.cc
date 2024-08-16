@@ -14,12 +14,13 @@ int main() {
 
   int location;
   bool selected;
+  bool game_over = false;
   tictactoe_astar::renderer::Renderer renderer(SIZE, 1080, 1080, 0.025);
-  while (!renderer.should_close()) {
+  while (!game_over && !renderer.should_close()) {
     renderer.render(grid);
     std::tie(location, selected) = renderer.get_selected_location();
     if (selected) {
-      std::tie(player, grid) = engine.select(location);
+      std::tie(player, grid, game_over) = engine.select(location);
       std::cout << (player == tictactoe_astar::engine::Player::NOUGHT ? "Nought"
                                                                       : "Cross")
                 << " clicked at location: " << location << std::endl;

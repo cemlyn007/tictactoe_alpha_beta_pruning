@@ -17,9 +17,10 @@ private:
 
 public:
   Engine(int size);
-  std::tuple<Player, const std::vector<Occupancy> &> select(int location);
+  std::tuple<Player, const std::vector<Occupancy> &, bool> select(int location);
   Player get_player();
   const std::vector<Occupancy> &get_grid();
+  bool is_game_over();
 };
 } // namespace tictactoe_astar::engine
 

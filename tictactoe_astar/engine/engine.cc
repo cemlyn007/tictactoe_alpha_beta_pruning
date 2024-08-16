@@ -10,7 +10,7 @@ Engine::Engine(int size) : _size(size), _player_turn(Player::NOUGHT) {
   }
 };
 
-std::tuple<Player, const std::vector<Occupancy> &>
+std::tuple<Player, const std::vector<Occupancy> &, bool>
 Engine::select(int location) {
   if (_grid[location] == Occupancy::EMPTY) {
     if (_player_turn == Player::NOUGHT) {
@@ -23,8 +23,103 @@ Engine::select(int location) {
       throw std::runtime_error("Unknown player type");
     }
   }
-  return {_player_turn, _grid};
+  return {_player_turn, _grid, is_game_over()};
 }
+
+bool Engine::is_game_over() {
+  int count = 0;
+  Player count_player = Player::NOUGHT;
+  for (int row = 0; row < _size; ++row) {
+    count = 0;
+    for (int column = 0; column < _size; ++column) {
+      int location = row * _size + column;
+      if (_grid[location] == Occupancy::EMPTY) {
+        count = 0;
+      } else if (_grid[location] == Occupancy::NOUGHT) {
+        count = count_player == Player::NOUGHT ? count + 1 : 1;
+        count_player = Player::NOUGHT;
+      } else if (_grid[location] == Occupancy::CROSS) {
+        count = count_player == Player::CROSS ? count + 1 : 1;
+        count_player = Player::CROSS;
+      } else {
+        throw std::runtime_error("Unknown occupancy");
+      }
+      if (count == _size) {
+        return true;
+      }
+    }
+  }
+  for (int column = 0; column < _size; ++column) {
+    count = 0;
+    for (int row = 0; row < _size; ++row) {
+      int location = row * _size + column;
+      if (_grid[location] == Occupancy::EMPTY) {
+        count = 0;
+      } else if (_grid[location] == Occupancy::NOUGHT) {
+        count = count_player == Player::NOUGHT ? count + 1 : 1;
+        count_player = Player::NOUGHT;
+      } else if (_grid[location] == Occupancy::CROSS) {
+        count = count_player == Player::CROSS ? count + 1 : 1;
+        count_player = Player::CROSS;
+      } else {
+        throw std::runtime_error("Unknown occupancy");
+      }
+      if (count == _size) {
+        return true;
+      }
+    }
+  }
+  for (int starting_row = -_size; starting_row < _size; ++starting_row) {
+    count = 0;
+    for (int index = 0; index < _size; ++index) {
+      int location = (starting_row + index) * _size + index;
+      if (location < 0 || location >= (_size * _size)) {
+        count = 0;
+      } else if (_grid[location] == Occupancy::EMPTY) {
+        count = 0;
+      } else if (_grid[location] == Occupancy::NOUGHT) {
+        count = count_player == Player::NOUGHT ? count + 1 : 1;
+        count_player = Player::NOUGHT;
+      } else if (_grid[location] == Occupancy::CROSS) {
+        count = count_player == Player::CROSS ? count + 1 : 1;
+        count_player = Player::CROSS;
+      } else {
+        throw std::runtime_error("Unknown occupancy");
+      }
+      if (count == _size) {
+        return true;
+      }
+    }
+  }
+  for (int starting_row = 2 * _size; starting_row > 0; --starting_row) {
+    count = 0;
+    for (int index = 0; index < _size; ++index) {
+      int location = (starting_row - index) * _size + index;
+      if (location < 0 || location >= (_size * _size)) {
+        count = 0;
+      } else if (_grid[location] == Occupancy::EMPTY) {
+        count = 0;
+      } else if (_grid[location] == Occupancy::NOUGHT) {
+        count = count_player == Player::NOUGHT ? count + 1 : 1;
+        count_player = Player::NOUGHT;
+      } else if (_grid[location] == Occupancy::CROSS) {
+        count = count_player == Player::CROSS ? count + 1 : 1;
+        count_player = Player::CROSS;
+      } else {
+        throw std::runtime_error("Unknown occupancy");
+      }
+      if (count == _size) {
+        return true;
+      }
+    }
+  }
+  for (const Occupancy &occupancy : _grid) {
+    if (occupancy == Occupancy::EMPTY) {
+      return false;
+    }
+  }
+  return true;
+};
 
 Player Engine::get_player() { return _player_turn; }
 const std::vector<Occupancy> &Engine::get_grid() { return _grid; }
