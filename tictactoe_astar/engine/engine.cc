@@ -3,7 +3,8 @@
 
 namespace tictactoe_astar::engine {
 
-Engine::Engine(int size) : _size(size), _player_turn(Player::NOUGHT) {
+Engine::Engine(int size, int win_length)
+    : _size(size), _win_length(win_length), _player_turn(Player::NOUGHT) {
   _grid.resize(_size * _size);
   for (int index = 0; index < _grid.size(); ++index) {
     _grid[index] = Occupancy::EMPTY;
@@ -44,7 +45,7 @@ bool Engine::is_game_over() {
       } else {
         throw std::runtime_error("Unknown occupancy");
       }
-      if (count == _size) {
+      if (count == _win_length) {
         return true;
       }
     }
@@ -64,7 +65,7 @@ bool Engine::is_game_over() {
       } else {
         throw std::runtime_error("Unknown occupancy");
       }
-      if (count == _size) {
+      if (count == _win_length) {
         return true;
       }
     }
@@ -86,7 +87,7 @@ bool Engine::is_game_over() {
       } else {
         throw std::runtime_error("Unknown occupancy");
       }
-      if (count == _size) {
+      if (count == _win_length) {
         return true;
       }
     }
@@ -108,7 +109,7 @@ bool Engine::is_game_over() {
       } else {
         throw std::runtime_error("Unknown occupancy");
       }
-      if (count == _size) {
+      if (count == _win_length) {
         return true;
       }
     }

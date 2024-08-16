@@ -12,11 +12,12 @@ enum class Occupancy { EMPTY = 0, NOUGHT = 1, CROSS = 2 };
 class Engine {
 private:
   int _size;
+  int _win_length;
   std::vector<Occupancy> _grid;
   Player _player_turn;
 
 public:
-  Engine(int size);
+  Engine(int size, int win_length);
   std::tuple<Player, const std::vector<Occupancy> &, bool> select(int location);
   Player get_player();
   const std::vector<Occupancy> &get_grid();

@@ -3,10 +3,11 @@
 #include <iostream>
 
 static const int SIZE = 3;
+static const int WIN_LENGTH = 3;
 
 int main() {
   tictactoe_astar::renderer::init();
-  tictactoe_astar::engine::Engine engine(SIZE);
+  tictactoe_astar::engine::Engine engine(SIZE, WIN_LENGTH);
 
   tictactoe_astar::engine::Player player = engine.get_player();
   auto grid = engine.get_grid();
