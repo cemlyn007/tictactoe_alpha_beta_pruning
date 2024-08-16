@@ -1,6 +1,6 @@
 
-#include "tictactoe_astar/renderer/grid.h"
-#include "tictactoe_astar/renderer/gl_error_macro.h"
+#include "tictactoe_ai/renderer/grid.h"
+#include "tictactoe_ai/renderer/gl_error_macro.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -8,7 +8,7 @@ static const float GL_WIDTH = 2.0f;
 static const float GL_MIN_COORDINATE = -1.0f;
 static const float GL_MAX_COORDINATE = 1.0f;
 
-namespace tictactoe_astar::renderer {
+namespace tictactoe_ai::renderer {
 
 Grid::Grid(int size, float line_width, Shader &shader) : _shader(shader) {
   GL_CALL(glGenBuffers(1, &_vertex_buffer_object));
@@ -65,4 +65,4 @@ std::vector<float> Grid::create_grid_vectices(int size, float line_width) {
   return vertices;
 };
 
-} // namespace tictactoe_astar::renderer
+} // namespace tictactoe_ai::renderer

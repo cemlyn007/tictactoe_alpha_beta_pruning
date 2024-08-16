@@ -1,6 +1,6 @@
 
-#include "tictactoe_astar/renderer/nought.h"
-#include "tictactoe_astar/renderer/gl_error_macro.h"
+#include "tictactoe_ai/renderer/nought.h"
+#include "tictactoe_ai/renderer/gl_error_macro.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
@@ -9,7 +9,7 @@ static const float GL_WIDTH = 2.0f;
 static const int CIRCLE_ITERATIONS = 36;
 static const float GL_MIN_COORDINATE = -1.0f;
 
-namespace tictactoe_astar::renderer {
+namespace tictactoe_ai::renderer {
 
 Nought::Nought(int size, float line_width, Shader *shader)
     : _size(size), _shader(shader) {
@@ -117,4 +117,4 @@ std::vector<float> Nought::create_nought_vectices(int size, float line_width) {
   return vertices;
 };
 
-} // namespace tictactoe_astar::renderer
+} // namespace tictactoe_ai::renderer

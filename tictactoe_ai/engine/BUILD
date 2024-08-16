@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
-package(default_visibility = ["//tictactoe_astar:__subpackages__"])
+package(default_visibility = ["//tictactoe_ai:__subpackages__"])
 
 cc_library(
     name = "engine",

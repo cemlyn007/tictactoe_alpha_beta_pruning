@@ -1,7 +1,7 @@
-#include "tictactoe_astar/engine/engine.h"
+#include "tictactoe_ai/engine/engine.h"
 #include <ctime>
 
-namespace tictactoe_astar::engine {
+namespace tictactoe_ai::engine {
 
 Engine::Engine(int size, int win_length)
     : _size(size), _win_length(win_length), _player_turn(Player::NOUGHT) {
@@ -149,4 +149,4 @@ GameOutcome Engine::get_game_outcome() {
 Player Engine::get_player() { return _player_turn; }
 const std::vector<Occupancy> &Engine::get_grid() { return _grid; }
 
-} // namespace tictactoe_astar::engine
+} // namespace tictactoe_ai::engine

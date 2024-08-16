@@ -1,8 +1,8 @@
-#include "tictactoe_astar/renderer/gl_error_macro.h"
+#include "tictactoe_ai/renderer/gl_error_macro.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace tictactoe_astar::renderer {
+namespace tictactoe_ai::renderer {
 #define GL_CALL(cmd)                                                           \
   {                                                                            \
     cmd;                                                                       \
@@ -37,4 +37,4 @@ const char *glErrorString(GLenum err) {
     return "Unknown error";
   }
 }
-} // namespace tictactoe_astar::renderer
+} // namespace tictactoe_ai::renderer

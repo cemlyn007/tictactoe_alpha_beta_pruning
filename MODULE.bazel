@@ -1,9 +1,9 @@
 """
-Tic-Tac-Toe with A* search opponent. 🤞
+Tic-Tac-Toe with AI. 🤞
 """
 
 module(
-    name = "tictactoe_astar",
+    name = "tictactoe_ai",
     version = "0.0.0",
     compatibility_level = 1,
 )

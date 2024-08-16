@@ -1,11 +1,11 @@
-#ifndef TICTACTOE_ASTAR_RENDERER_SHADER_H_
-#define TICTACTOE_ASTAR_RENDERER_SHADER_H_
+#ifndef TICTACTOE_AI_RENDERER_SHADER_H_
+#define TICTACTOE_AI_RENDERER_SHADER_H_
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <string>
 
-namespace tictactoe_astar::renderer {
+namespace tictactoe_ai::renderer {
 
 class Shader {
 private:
@@ -24,5 +24,5 @@ private:
   GLuint load_fragment_shader(std::string fragment_source);
 };
 
-} // namespace tictactoe_astar::renderer
+} // namespace tictactoe_ai::renderer
 #endif

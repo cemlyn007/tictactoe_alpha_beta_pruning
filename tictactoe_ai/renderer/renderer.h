@@ -1,16 +1,16 @@
-#ifndef TICTACTOE_ASTAR_RENDERER_H_
-#define TICTACTOE_ASTAR_RENDERER_H_
-#include "tictactoe_astar/engine/engine.h"
-#include "tictactoe_astar/renderer/cross.h"
-#include "tictactoe_astar/renderer/grid.h"
-#include "tictactoe_astar/renderer/nought.h"
+#ifndef TICTACTOE_AI_RENDERER_H_
+#define TICTACTOE_AI_RENDERER_H_
+#include "tictactoe_ai/engine/engine.h"
+#include "tictactoe_ai/renderer/cross.h"
+#include "tictactoe_ai/renderer/grid.h"
+#include "tictactoe_ai/renderer/nought.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <string>
 #include <vector>
 
-namespace tictactoe_astar::renderer {
+namespace tictactoe_ai::renderer {
 
 void init();
 
@@ -47,6 +47,6 @@ private:
   std::string read_shader(const std::string &file_path);
 };
 
-} // namespace tictactoe_astar::renderer
+} // namespace tictactoe_ai::renderer
 
 #endif

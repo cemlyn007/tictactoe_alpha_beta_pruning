@@ -1,8 +1,8 @@
-#include "tictactoe_astar/renderer/shader.h"
-#include "tictactoe_astar/renderer/gl_error_macro.h"
+#include "tictactoe_ai/renderer/shader.h"
+#include "tictactoe_ai/renderer/gl_error_macro.h"
 #include <string>
 
-namespace tictactoe_astar::renderer {
+namespace tictactoe_ai::renderer {
 
 Shader::Shader(std::string vertex_source_code, std::string fragment_source_code)
     : _program(load_program(vertex_source_code, fragment_source_code)) {}
@@ -74,4 +74,4 @@ GLuint Shader::load_fragment_shader(std::string fragment_source) {
   return fragment_shader;
 };
 
-} // namespace tictactoe_astar::renderer
+} // namespace tictactoe_ai::renderer

@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <sstream>
 
-namespace tictactoe_astar::renderer {
+namespace tictactoe_ai::renderer {
 
 #define GL_CALL(cmd)                                                           \
   {                                                                            \
@@ -18,4 +18,4 @@ namespace tictactoe_astar::renderer {
 
 const char *glErrorString(GLenum err);
 
-} // namespace tictactoe_astar::renderer
+} // namespace tictactoe_ai::renderer

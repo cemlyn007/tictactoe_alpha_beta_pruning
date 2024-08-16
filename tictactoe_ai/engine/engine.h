@@ -1,9 +1,9 @@
-#ifndef TICTACTOE_ASTAR_ENGINE_H_
-#define TICTACTOE_ASTAR_ENGINE_H_
+#ifndef TICTACTOE_AI_ENGINE_H_
+#define TICTACTOE_AI_ENGINE_H_
 #include <tuple>
 #include <vector>
 
-namespace tictactoe_astar::engine {
+namespace tictactoe_ai::engine {
 
 enum class Player { NOUGHT = 0, CROSS = 1 };
 
@@ -26,6 +26,6 @@ public:
   const std::vector<Occupancy> &get_grid();
   GameOutcome get_game_outcome();
 };
-} // namespace tictactoe_astar::engine
+} // namespace tictactoe_ai::engine
 
 #endif

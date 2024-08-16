@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
-package(default_visibility = ["//tictactoe_astar:__subpackages__"])
+package(default_visibility = ["//tictactoe_ai:__subpackages__"])
 
 OPENGL_LINKOPTS = [
     "-lGL",
@@ -12,8 +12,8 @@ cc_library(
     srcs = ["renderer.cc"],
     hdrs = ["renderer.h"],
     data = [
-        "//tictactoe_astar/renderer/shaders:shader.frag",
-        "//tictactoe_astar/renderer/shaders:shader.vert",
+        "//tictactoe_ai/renderer/shaders:shader.frag",
+        "//tictactoe_ai/renderer/shaders:shader.vert",
     ],
     linkopts = OPENGL_LINKOPTS,
     deps = [
@@ -22,7 +22,7 @@ cc_library(
         ":grid",
         ":nought",
         ":shader",
-        "//tictactoe_astar/engine",
+        "//tictactoe_ai/engine",
         "@glew//:glew_static",
         "@glfw",
     ],

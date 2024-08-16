@@ -1,8 +1,8 @@
-#include "tictactoe_astar/renderer/renderer.h"
-#include "tictactoe_astar/renderer/cross.h"
-#include "tictactoe_astar/renderer/gl_error_macro.h"
-#include "tictactoe_astar/renderer/grid.h"
-#include "tictactoe_astar/renderer/nought.h"
+#include "tictactoe_ai/renderer/renderer.h"
+#include "tictactoe_ai/renderer/cross.h"
+#include "tictactoe_ai/renderer/gl_error_macro.h"
+#include "tictactoe_ai/renderer/grid.h"
+#include "tictactoe_ai/renderer/nought.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cstdlib>
@@ -11,16 +11,16 @@
 #include <stdexcept>
 
 static const char *SHADER_VERTEX_FILE_PATH =
-    "tictactoe_astar/renderer/shaders/shader.vert";
+    "tictactoe_ai/renderer/shaders/shader.vert";
 static const char *SHADER_FRAGMENT_FILE_PATH =
-    "tictactoe_astar/renderer/shaders/shader.frag";
+    "tictactoe_ai/renderer/shaders/shader.frag";
 
 static void glfwErrorCallback(int error, const char *description) {
   std::cerr << "GLFW Error: " << error << " - " << description << std::endl;
   throw std::runtime_error(std::string("GLFW Error: ") + description);
 }
 
-namespace tictactoe_astar::renderer {
+namespace tictactoe_ai::renderer {
 
 void init() {
   glfwSetErrorCallback(glfwErrorCallback);
@@ -166,4 +166,4 @@ std::string Renderer::read_shader(const std::string &file_path) {
   buffer << file.rdbuf(); // Read the entire file into the stringstream buffer
   return buffer.str();    // Return the string from the buffer
 }
-} // namespace tictactoe_astar::renderer
+} // namespace tictactoe_ai::renderer

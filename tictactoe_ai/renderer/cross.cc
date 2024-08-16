@@ -1,6 +1,6 @@
 
-#include "tictactoe_astar/renderer/cross.h"
-#include "tictactoe_astar/renderer/gl_error_macro.h"
+#include "tictactoe_ai/renderer/cross.h"
+#include "tictactoe_ai/renderer/gl_error_macro.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
@@ -8,7 +8,7 @@
 static const float GL_WIDTH = 2.0f;
 static const float GL_MIN_COORDINATE = -1.0f;
 
-namespace tictactoe_astar::renderer {
+namespace tictactoe_ai::renderer {
 
 Cross::Cross(int size, float line_width, Shader *shader)
     : _size(size), _shader(shader) {
@@ -107,4 +107,4 @@ std::vector<float> Cross::create_cross_vectices(int size, float line_width) {
   };
 };
 
-} // namespace tictactoe_astar::renderer
+} // namespace tictactoe_ai::renderer
