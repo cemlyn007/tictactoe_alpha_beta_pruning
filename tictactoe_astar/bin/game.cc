@@ -15,17 +15,33 @@ int main() {
 
   int location;
   bool selected;
-  bool game_over = false;
+  tictactoe_astar::engine::GameOutcome game_outcome =
+      tictactoe_astar::engine::GameOutcome::ONGOING;
   tictactoe_astar::renderer::Renderer renderer(SIZE, 1080, 1080, 0.025);
-  while (!game_over && !renderer.should_close()) {
+  while (game_outcome == tictactoe_astar::engine::GameOutcome::ONGOING &&
+         !renderer.should_close()) {
     renderer.render(grid);
     std::tie(location, selected) = renderer.get_selected_location();
     if (selected) {
-      std::tie(player, grid, game_over) = engine.select(location);
+      std::tie(player, grid, game_outcome) = engine.select(location);
       std::cout << (player == tictactoe_astar::engine::Player::NOUGHT ? "Nought"
                                                                       : "Cross")
                 << " clicked at location: " << location << std::endl;
     }
+  }
+  switch (game_outcome) {
+  case tictactoe_astar::engine::GameOutcome::DRAW:
+    std::cout << "Draw!" << std::endl;
+    break;
+  case tictactoe_astar::engine::GameOutcome::ONGOING:
+    std::cout << "Game stopped early!" << std::endl;
+    break;
+  case tictactoe_astar::engine::GameOutcome::NOUGHT:
+    std::cout << "Nought won!" << std::endl;
+    break;
+  case tictactoe_astar::engine::GameOutcome::CROSS:
+    std::cout << "Cross won!" << std::endl;
+    break;
   }
   tictactoe_astar::renderer::terminate();
   return 0;

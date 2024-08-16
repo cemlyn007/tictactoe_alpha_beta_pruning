@@ -9,6 +9,8 @@ enum class Player { NOUGHT = 0, CROSS = 1 };
 
 enum class Occupancy { EMPTY = 0, NOUGHT = 1, CROSS = 2 };
 
+enum class GameOutcome { DRAW = 0, ONGOING = 1, NOUGHT = 2, CROSS = 3 };
+
 class Engine {
 private:
   int _size;
@@ -18,10 +20,11 @@ private:
 
 public:
   Engine(int size, int win_length);
-  std::tuple<Player, const std::vector<Occupancy> &, bool> select(int location);
+  std::tuple<Player, const std::vector<Occupancy> &, GameOutcome>
+  select(int location);
   Player get_player();
   const std::vector<Occupancy> &get_grid();
-  bool is_game_over();
+  GameOutcome get_game_outcome();
 };
 } // namespace tictactoe_astar::engine
 

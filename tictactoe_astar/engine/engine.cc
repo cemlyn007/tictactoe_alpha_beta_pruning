@@ -11,7 +11,7 @@ Engine::Engine(int size, int win_length)
   }
 };
 
-std::tuple<Player, const std::vector<Occupancy> &, bool>
+std::tuple<Player, const std::vector<Occupancy> &, GameOutcome>
 Engine::select(int location) {
   if (_grid[location] == Occupancy::EMPTY) {
     if (_player_turn == Player::NOUGHT) {
@@ -24,10 +24,10 @@ Engine::select(int location) {
       throw std::runtime_error("Unknown player type");
     }
   }
-  return {_player_turn, _grid, is_game_over()};
+  return {_player_turn, _grid, get_game_outcome()};
 }
 
-bool Engine::is_game_over() {
+GameOutcome Engine::get_game_outcome() {
   int count = 0;
   Player count_player = Player::NOUGHT;
   for (int row = 0; row < _size; ++row) {
@@ -46,7 +46,13 @@ bool Engine::is_game_over() {
         throw std::runtime_error("Unknown occupancy");
       }
       if (count == _win_length) {
-        return true;
+        if (count_player == Player::NOUGHT) {
+          return GameOutcome::NOUGHT;
+        } else if (count_player == Player::CROSS) {
+          return GameOutcome::CROSS;
+        } else {
+          throw std::runtime_error("Unknown player");
+        }
       }
     }
   }
@@ -66,7 +72,13 @@ bool Engine::is_game_over() {
         throw std::runtime_error("Unknown occupancy");
       }
       if (count == _win_length) {
-        return true;
+        if (count_player == Player::NOUGHT) {
+          return GameOutcome::NOUGHT;
+        } else if (count_player == Player::CROSS) {
+          return GameOutcome::CROSS;
+        } else {
+          throw std::runtime_error("Unknown player");
+        }
       }
     }
   }
@@ -88,7 +100,13 @@ bool Engine::is_game_over() {
         throw std::runtime_error("Unknown occupancy");
       }
       if (count == _win_length) {
-        return true;
+        if (count_player == Player::NOUGHT) {
+          return GameOutcome::NOUGHT;
+        } else if (count_player == Player::CROSS) {
+          return GameOutcome::CROSS;
+        } else {
+          throw std::runtime_error("Unknown player");
+        }
       }
     }
   }
@@ -110,16 +128,22 @@ bool Engine::is_game_over() {
         throw std::runtime_error("Unknown occupancy");
       }
       if (count == _win_length) {
-        return true;
+        if (count_player == Player::NOUGHT) {
+          return GameOutcome::NOUGHT;
+        } else if (count_player == Player::CROSS) {
+          return GameOutcome::CROSS;
+        } else {
+          throw std::runtime_error("Unknown player");
+        }
       }
     }
   }
   for (const Occupancy &occupancy : _grid) {
     if (occupancy == Occupancy::EMPTY) {
-      return false;
+      return GameOutcome::ONGOING;
     }
   }
-  return true;
+  return GameOutcome::DRAW;
 };
 
 Player Engine::get_player() { return _player_turn; }
