@@ -110,7 +110,7 @@ std::tuple<int, bool> Renderer::get_selected_location() {
 
 GLFWwindow *Renderer::create_window(int width, int height) {
   GLFWwindow *window =
-      glfwCreateWindow(width, height, "Tic Tac Toe", NULL, NULL);
+      glfwCreateWindow(width, height, "Tic Tac Toe", nullptr, nullptr);
   if (!window) {
     throw std::runtime_error("Could not create window");
   }

@@ -1,5 +1,6 @@
 #include "tictactoe_ai/engine/engine.h"
 #include <ctime>
+#include <stdexcept>
 
 namespace tictactoe_ai::engine {
 
