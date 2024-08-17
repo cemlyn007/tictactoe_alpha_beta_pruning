@@ -25,6 +25,12 @@ public:
   Player get_player();
   const std::vector<Occupancy> &get_grid();
   GameOutcome get_game_outcome();
+  std::tuple<int, GameOutcome> get_best_location();
+
+private:
+  std::tuple<int, GameOutcome> get_best_location(Player player,
+                                                 std::vector<Occupancy> &grid);
+  GameOutcome get_game_outcome(const std::vector<Occupancy> &grid);
 };
 } // namespace tictactoe_ai::engine
 
