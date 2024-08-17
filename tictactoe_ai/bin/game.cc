@@ -2,14 +2,20 @@
 #include "tictactoe_ai/renderer/renderer.h"
 #include <iostream>
 
-static const int SIZE = 4;
-static const int WIN_LENGTH = 3;
 static const tictactoe_ai::engine::Player AI_PLAYER =
-    tictactoe_ai::engine::Player::CROSS;
+    tictactoe_ai::engine::Player::NOUGHT;
 
-int main() {
+int main(int argc, char *argv[]) {
+  int size = 3;
+  int win_length = 3;
+  if (argc == 2 || argc == 3) {
+    size = std::stoi(argv[1]);
+  }
+  if (argc == 3) {
+    win_length = std::stoi(argv[2]);
+  }
   tictactoe_ai::renderer::init();
-  tictactoe_ai::engine::Engine engine(SIZE, WIN_LENGTH);
+  tictactoe_ai::engine::Engine engine(size, win_length);
 
   tictactoe_ai::engine::Player player = engine.get_player();
   auto grid = engine.get_grid();
@@ -19,7 +25,7 @@ int main() {
   bool selected;
   tictactoe_ai::engine::GameOutcome game_outcome =
       tictactoe_ai::engine::GameOutcome::ONGOING;
-  tictactoe_ai::renderer::Renderer renderer(SIZE, 1080, 1080, 0.025);
+  tictactoe_ai::renderer::Renderer renderer(size, 1080, 1080, 0.025);
   while (game_outcome == tictactoe_ai::engine::GameOutcome::ONGOING &&
          !renderer.should_close()) {
     renderer.render(grid);
