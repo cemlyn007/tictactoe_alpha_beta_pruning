@@ -1,9 +1,12 @@
 #include "tictactoe_ai/engine/engine.h"
 #include "tictactoe_ai/renderer/renderer.h"
+#include <future>
 #include <iostream>
 
+using namespace std::chrono_literals;
+
 static const tictactoe_ai::engine::Player AI_PLAYER =
-    tictactoe_ai::engine::Player::NOUGHT;
+    tictactoe_ai::engine::Player::CROSS;
 
 int main(int argc, char *argv[]) {
   int size = 3;
@@ -21,6 +24,9 @@ int main(int argc, char *argv[]) {
   auto grid = engine.get_grid();
   grid = std::ref(engine.get_grid());
 
+  std::future<std::tuple<int, int>> future;
+  bool future_consumed = true;
+  std::future_status status;
   int location;
   bool selected;
   tictactoe_ai::engine::GameOutcome game_outcome =
@@ -30,15 +36,29 @@ int main(int argc, char *argv[]) {
          !renderer.should_close()) {
     renderer.render(grid);
     if (player == AI_PLAYER) {
-      auto result = engine.get_best_location();
-      location = std::get<0>(result);
-      selected = true;
+      if (future_consumed) {
+        selected = false;
+        future = std::async(std::launch::async,
+                            [&engine] { return engine.get_best_location(); });
+        future_consumed = false;
+      } else {
+        switch (status = future.wait_for(1s); status) {
+        case std::future_status::deferred:
+          break;
+        case std::future_status::timeout:
+          break;
+        case std::future_status::ready:
+          auto result = future.get();
+          location = std::get<0>(result);
+          selected = true;
+          future_consumed = true;
+          break;
+        }
+      }
     } else {
       std::tie(location, selected) = renderer.get_selected_location();
     }
     if (selected) {
-      // Set to false for the bot best location selection case.
-      selected = false;
       std::tie(player, grid, game_outcome) = engine.select(location);
       std::cout << (player == tictactoe_ai::engine::Player::NOUGHT ? "Nought"
                                                                    : "Cross")
