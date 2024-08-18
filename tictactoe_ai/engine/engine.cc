@@ -1,5 +1,7 @@
 #include "tictactoe_ai/engine/engine.h"
+#include <algorithm>
 #include <ctime>
+#include <limits.h>
 #include <stdexcept>
 
 namespace tictactoe_ai::engine {
@@ -33,23 +35,34 @@ GameOutcome Engine::get_game_outcome() { return get_game_outcome(_grid); }
 Player Engine::get_player() { return _player_turn; }
 const std::vector<Occupancy> &Engine::get_grid() { return _grid; }
 
-std::tuple<int, GameOutcome> Engine::get_best_location() {
-  return get_best_location(_player_turn, _grid);
+std::tuple<int, int> Engine::get_best_location() {
+  return get_best_location(_player_turn, _grid, 0);
 };
 
-std::tuple<int, GameOutcome>
-Engine::get_best_location(Player player, std::vector<Occupancy> &grid) {
+std::tuple<int, int> Engine::get_best_location(Player player,
+                                               std::vector<Occupancy> &grid,
+                                               int depth) {
   GameOutcome game_outcome = get_game_outcome(grid);
   if (game_outcome != GameOutcome::ONGOING) {
-    return {-1, game_outcome};
+    int score;
+    if (game_outcome == GameOutcome::NOUGHT) {
+      score = INT_MAX - depth;
+    } else if (game_outcome == GameOutcome::CROSS) {
+      score = INT_MIN + depth;
+    } else {
+      score = 0;
+    }
+    return {-1, score};
   }
   // else...
   Player next_player;
   int best_location = -1;
-  GameOutcome best_outcome = GameOutcome::ONGOING;
+  int best_score;
   if (player == Player::NOUGHT) {
+    best_score = INT_MIN;
     next_player = Player::CROSS;
   } else if (player == Player::CROSS) {
+    best_score = INT_MAX;
     next_player = Player::NOUGHT;
   } else {
     throw std::runtime_error("Unknown player");
@@ -66,54 +79,29 @@ Engine::get_best_location(Player player, std::vector<Occupancy> &grid) {
     } else {
       throw std::runtime_error("Unknown player");
     }
-    auto result = get_best_location(next_player, grid);
+    auto result = get_best_location(next_player, grid, depth + 1);
     grid[location] = Occupancy::EMPTY;
-    GameOutcome outcome = std::get<1>(result);
+    int score = std::get<1>(result);
     if (player == Player::NOUGHT) {
-      if (outcome == GameOutcome::NOUGHT) {
+      best_score = std::max(best_score, score);
+      if (best_score == score) {
         best_location = location;
-        best_outcome = outcome;
-      } else if (outcome == GameOutcome::DRAW) {
-        if (best_outcome == GameOutcome::CROSS ||
-            best_outcome == GameOutcome::ONGOING) {
-          best_location = location;
-          best_outcome = outcome;
-        }
-      } else if (outcome == GameOutcome::CROSS) {
-        if (best_outcome == GameOutcome::ONGOING) {
-          best_location = location;
-          best_outcome = outcome;
-        }
-      } else {
-        throw std::runtime_error("Should not happen");
       }
     } else if (player == Player::CROSS) {
-      if (outcome == GameOutcome::CROSS) {
+      best_score = std::min(best_score, score);
+      if (best_score == score) {
         best_location = location;
-        best_outcome = outcome;
-      } else if (outcome == GameOutcome::DRAW) {
-        if (best_outcome == GameOutcome::NOUGHT ||
-            best_outcome == GameOutcome::ONGOING) {
-          best_location = location;
-          best_outcome = outcome;
-        }
-      } else if (outcome == GameOutcome::NOUGHT) {
-        if (best_outcome == GameOutcome::ONGOING) {
-          best_location = location;
-          best_outcome = outcome;
-        }
-      } else {
-        throw std::runtime_error("Should not happen");
       }
     } else {
       throw std::runtime_error("Should not happen");
     }
   }
-  if (best_outcome == GameOutcome::ONGOING) {
+  if ((player == Player::NOUGHT && best_score == INT_MIN) ||
+      (player == Player::CROSS && best_score == INT_MAX)) {
     throw std::runtime_error(
         "Should have reached a terminal state but returning ongoing");
   }
-  return {best_location, best_outcome};
+  return {best_location, best_score};
 };
 
 GameOutcome Engine::get_game_outcome(const std::vector<Occupancy> &grid) {
