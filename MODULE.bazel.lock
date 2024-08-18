@@ -5,8 +5,10 @@
     "https://bcr.bazel.build/modules/abseil-cpp/20210324.2/MODULE.bazel": "7cd0312e064fde87c8d1cd79ba06c876bd23630c83466e9500321be55c96ace2",
     "https://bcr.bazel.build/modules/abseil-cpp/20211102.0/MODULE.bazel": "70390338f7a5106231d20620712f7cccb659cd0e9d073d1991c038eb9fc57589",
     "https://bcr.bazel.build/modules/abseil-cpp/20211102.0/source.json": "7e3a9adf473e9af076ae485ed649d5641ad50ec5c11718103f34de03170d94ad",
+    "https://bcr.bazel.build/modules/apple_support/1.16.0/MODULE.bazel": "e785295d21ccab339c3af131752bfbe50fc33dd8215b357492d05bfad0232400",
+    "https://bcr.bazel.build/modules/apple_support/1.16.0/source.json": "c9b56c85f6f9136ceacaa248565fbfb86686ab37a097a7e32d93f6822f21083b",
     "https://bcr.bazel.build/modules/apple_support/1.5.0/MODULE.bazel": "50341a62efbc483e8a2a6aec30994a58749bd7b885e18dd96aa8c33031e558ef",
-    "https://bcr.bazel.build/modules/apple_support/1.5.0/source.json": "eb98a7627c0bc486b57f598ad8da50f6625d974c8f723e9ea71bd39f709c9862",
+    "https://bcr.bazel.build/modules/bazel_features/1.10.0/MODULE.bazel": "f75e8807570484a99be90abcd52b5e1f390362c258bcb73106f4544957a48101",
     "https://bcr.bazel.build/modules/bazel_features/1.11.0/MODULE.bazel": "f9382337dd5a474c3b7d334c2f83e50b6eaedc284253334cf823044a26de03e8",
     "https://bcr.bazel.build/modules/bazel_features/1.11.0/source.json": "c9320aa53cd1c441d24bd6b716da087ad7e4ff0d9742a9884587596edfe53015",
     "https://bcr.bazel.build/modules/bazel_skylib/1.0.3/MODULE.bazel": "bcb0fd896384802d1ad283b4e4eb4d718eebd8cb820b0a2c3a347fb971afd9d8",
@@ -68,8 +70,8 @@
   "moduleExtensions": {
     "@@apple_support~//crosstool:setup.bzl%apple_cc_configure_extension": {
       "general": {
-        "bzlTransitiveDigest": "PjIds3feoYE8SGbbIq2SFTZy3zmxeO2tQevJZNDo7iY=",
-        "usagesDigest": "aLmqbvowmHkkBPve05yyDNGN7oh7QE9kBADr3QIZTZs=",
+        "bzlTransitiveDigest": "7ii+gFxWSxHhQPrBxfMEHhtrGvHmBTvsh+KOyGunP/s=",
+        "usagesDigest": "UaeEcysKgFT507jANEdqin9YqgRyNtqOBOHDXKCdtCM=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -114,7 +116,7 @@
     "@@toolchains_llvm~//toolchain/extensions:llvm.bzl%llvm": {
       "general": {
         "bzlTransitiveDigest": "i2QyNjD/qcSQlxaKhQjSN1uw8mm+ZusH07AWV6RnyQU=",
-        "usagesDigest": "tTYhEaJMlFdbq1Gh1ZvUk7JjsaI8BClH/b3mGUSn4hI=",
+        "usagesDigest": "S5gv9q7XkcI5MoS2rqlVnNSTiLHqYYy5ONCJpsF3vdg=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -137,7 +139,9 @@
               "link_flags": {},
               "link_libs": {},
               "llvm_versions": {
-                "": "18.1.4"
+                "": "18.1.4",
+                "darwin-aarch64": "",
+                "darwin-x86_64": ""
               },
               "opt_compile_flags": {},
               "opt_link_flags": {},
@@ -158,8 +162,12 @@
               "exec_arch": "",
               "exec_os": "",
               "llvm_mirror": "",
-              "llvm_version": "18.1.4",
-              "llvm_versions": {},
+              "llvm_version": "",
+              "llvm_versions": {
+                "": "18.1.4",
+                "darwin-aarch64": "",
+                "darwin-x86_64": ""
+              },
               "netrc": "",
               "sha256": {},
               "strip_prefix": {},

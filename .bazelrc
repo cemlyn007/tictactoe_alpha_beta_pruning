@@ -14,6 +14,8 @@ build:linux --incompatible_strict_action_env=true
 build:linux --incompatible_enable_cc_toolchain_resolution
 build:linux --action_env=BAZEL_CXXOPTS="-std=c++23"
 
+build:macos --cxxopt=-std=c++20
+
 # Bump when Windows toolchain supports C++ 23.
 build:windows --action_env=BAZEL_CXXOPTS="/std:c++20"
 build:windows --cxxopt=/std:c++20

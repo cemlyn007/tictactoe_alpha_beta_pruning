@@ -5,6 +5,7 @@ package(default_visibility = ["//tictactoe_ai:__subpackages__"])
 opengl_linkopts = select({
     "@platforms//os:windows": ["-DEFAULTLIB:opengl32.lib"],
     "@platforms//os:linux": ["-lGL", "-lX11"],
+    "@platforms//os:osx": ["-framework", "OpenGL"],
 })
 
 cc_library(
