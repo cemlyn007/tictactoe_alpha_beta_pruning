@@ -17,6 +17,8 @@ private:
   int _win_length;
   std::vector<Occupancy> _grid;
   Player _player_turn;
+  int _remaining_moves;
+  int _previous_location;
 
 public:
   Engine(int size, int win_length);
@@ -28,9 +30,16 @@ public:
   std::tuple<int, int> get_best_location();
 
 private:
-  std::tuple<int, int>
-  get_best_location(Player player, std::vector<Occupancy> &grid, int depth);
+  std::tuple<int, int> get_best_location(Player player,
+                                         std::vector<Occupancy> &grid,
+                                         int depth, int alpha, int beta,
+                                         int previous_location,
+                                         int moves_remaining);
   GameOutcome get_game_outcome(const std::vector<Occupancy> &grid);
+  GameOutcome get_played_move_outcome(const std::vector<Occupancy> &grid,
+                                      Player player, int previous_location,
+                                      int moves_remaining);
+  void print_board(const std::vector<Occupancy> &grid);
 };
 } // namespace tictactoe_ai::engine
 
