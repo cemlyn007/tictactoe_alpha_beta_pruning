@@ -3,7 +3,9 @@
 #include "tictactoe_ai/renderer/gl_error_macro.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <cmath>
+// MSVC requires this to define M_PI:
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 static const float GL_WIDTH = 2.0f;
 static const float GL_MIN_COORDINATE = -1.0f;
