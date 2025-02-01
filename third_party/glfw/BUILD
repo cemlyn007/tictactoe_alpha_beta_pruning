@@ -1,5 +1,5 @@
 """
-Copied from https://github.com/bazelbuild/bazel-central-registry/issues/1305
+Originally copied from https://github.com/bazelbuild/bazel-central-registry/issues/1305.
 """
 
 load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
@@ -41,11 +41,12 @@ LINUX_DEFINES = [
 ]
 
 LINUX_HDRS = [
-    "src/glx_context.h",
     "src/linux_joystick.h",
     "src/posix_thread.h",
     "src/posix_time.h",
     "src/x11_platform.h",
+    "src/posix_poll.h",
+    "src/null_joystick.h",
 ]
 
 LINUX_SRCS = [
@@ -56,6 +57,10 @@ LINUX_SRCS = [
     "src/x11_init.c",
     "src/x11_monitor.c",
     "src/x11_window.c",
+    "src/posix_poll.c",
+    "src/null_joystick.c",
+    "src/wl_init.c",
+    "src/posix_module.c",
 ]
 
 LINUX_LINKOPTS = []
@@ -75,7 +80,6 @@ DARWIN_HDRS = [
     "src/glx_context.h",
     "src/nsgl_context.h",
     "src/null_joystick.h",
-    "src/null_platform.h",
     "src/posix_thread.h",
     "src/wl_platform.h",
 ]
@@ -102,21 +106,25 @@ DARWIN_LINKOPTS = [
 COMMON_HDRS = [
     "include/GLFW/glfw3.h",
     "include/GLFW/glfw3native.h",
-    "src/egl_context.h",
+    "src/platform.h",
     "src/internal.h",
-    "src/osmesa_context.h",
     "src/mappings.h",
     "src/xkb_unicode.h",
+    "src/null_platform.h",
 ]
 
 COMMON_SRCS = [
+    "src/null_monitor.c",
+    "src/null_window.c",
+    "src/vulkan.c",
+    "src/null_init.c",
+    "src/platform.c",
     "src/context.c",
     "src/egl_context.c",
     "src/init.c",
     "src/input.c",
     "src/osmesa_context.c",
     "src/monitor.c",
-    "src/vulkan.c",
     "src/window.c",
     "src/xkb_unicode.c",
 ]
